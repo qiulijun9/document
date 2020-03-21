@@ -12,6 +12,14 @@
 10、.all()接受一组异步任务，执行一组异步任务，在所有操作执行完后执行回调。Promise.all().then()和 promise.all()接收到的数组顺序一样
 11、.race()只会获得最先执行完成的那个结果，其他异步任务也会进行，但是执行结果会抛弃掉
 
-# async/await
+# async/await 解决异步问题提出的一种方案
 
 1、await 后面的内容相当与放到了 Promise.then()里面，要加入微任务队列
+2、async 函数返回值是 Promise 对象，await 必须在 async 函数里使用
+3、async 函数返回的 Promise 对象 ，必须等到内部所有的 await 命令的 Promise 对象执行完，才会发生状态改变（才会执行.then）
+4、async 函数中只要一个 await 出现 reject 状态，后面的 await 都不会执行，解决办法添加 try/catch
+
+# Generator
+
+1、Generator 函数 function 关键字和函数名之间有个\*，函数体内使用 yield 表达式
+2、函数内部调用 next()方法，就会返回 value（yield 表示式后的值） 和 down（是否遍历结束） 两个属性

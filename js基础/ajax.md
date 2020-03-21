@@ -1,0 +1,52 @@
+工作原理：
+相当于在用户和服务器之间加了一个中间层，使用户操作与服务器响应异步化
+
+ajax
+优点：
+
+1. 无刷新更新数据
+2. 异步通信，加快页面响应能力
+3. 减轻服务器负担
+4. 基于标准，并得到广泛支持
+
+缺点：
+
+1. 存在一定安全问题
+2. 对搜索引擎支持比较弱
+3. 无法用 url 直接访问
+
+XMLHttpRequest 对象 原生 XHR
+// 原生 XHR
+var xhr = new XMLHttpRequest();
+xhr.open('GET', url);
+xhr.onreadystatechange = function() {
+if (xhr.readyState === 4 && xhr.status === 200) {
+console.log(xhr.responseText) // 从服务器获取数据
+}
+}
+xhr.send()
+
+fetch
+// fetch
+fetch(url)
+.then(response => {
+if (response.ok) {
+return response.json();
+}
+})
+.then(data => console.log(data))
+.catch(err => console.log(err))
+
+axios
+它有以下几大特性：
+
+1. 可以在 node.js 中使用
+2. 提供了并发请求的接口
+3. 支持 Promise API
+
+   axios({
+   method: 'GET',
+   url: url,
+   })
+   .then(res => {console.log(res)})
+   .catch(err => {console.log(err)})
