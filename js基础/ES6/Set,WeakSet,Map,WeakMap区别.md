@@ -1,10 +1,17 @@
 # set
 
+接收的是实现 iterable 接口的数据结构
+
 1.类似于数组，但成员都是唯一的，无重复值
 
 2.可以遍历,方法：forEach(),keys(),values(),entries()
 
 3.操作方法：add()has()delete()clear()
+
+数组去重：
+function dedepe(array){
+return Array.from(new Set(array))
+}
 
 # weakSet
 
@@ -18,7 +25,7 @@
 
 # map
 
-1.以键值对的形式存储，可以存储不重复的值
+1.以键值对的形式存储类似于 Object，可以存储不重复的值
 
 2.操作方法： set(key,value) ,get(key),has(key),delete(key),clear()
 
