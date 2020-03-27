@@ -1,4 +1,7 @@
-// console.log([...new Set([NaN, 1, 1, null, null, NaN])])
+const obj = {};
+for (let i = 0; i < len; i++) {
+  !obj[arr[i]] && obj[arr[i]] = true && newArr.push(arr[i]);
+}
 
 const arr = [NaN, 1, 1, null, null, NaN, 2];
 const newArr = [];
