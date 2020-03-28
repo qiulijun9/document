@@ -27,6 +27,22 @@ connect(mapStateToProps, mapDispatchToProps)(MyComponent)
 4. 创建 store,使用 createStore 方法
    store 可以理解为有多个加工机器的总工厂
    提供 subscribe，dispatch，getState 这些方法。
+5. 组件通过 useSelector, useDispatch 　来获取和修改 state 的值
+
+```
+   import { useSelector, useDispatch } from 'react-redux';
+
+   //获取state中的值
+   const {isDraging } = useSelector(state => {
+   return state;
+   });
+   //修改state中的值
+   const dispatch = useDispatch();
+   const handlePictureGrouping = useCallback(() => {
+   dispatch({ type: 'IS_GROUPING', data: true });
+   }, [dispatch]);
+
+```
 
 用户通过 view 发出 action
 然后 store 自动调用 reducer,并传入两个参数：当前 state 和 action ，reducer 会返回新的 state
@@ -46,3 +62,7 @@ https://juejin.im/post/58bcb5821b69e6006b24ede0
    MobX 没有那么自然的数据流动，也没有时间回溯的能力，但是 View 更新很精确，粒度控制很细。
 2. Redux 通过引入一些中间件来处理副作用；
    MobX 没有中间件，副作用的处理比较自由。
+
+```
+
+```

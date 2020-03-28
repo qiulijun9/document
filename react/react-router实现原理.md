@@ -29,9 +29,58 @@ hisory 为依据来实现路由的优点：
 兼容性不如 hash
 需要后端做相应的配置，否则直接访问子页面会出现 404 错误
 
-React-router-dom 包来介绍常用的 BrowserRouter、HashRouter、Link 和 Router 等。
+React-router-dom 包来介绍常用的 BrowserRouter、HashRouter、Link 和 Route 等。
 
-BrowserRouter 是通过 h5 的 history 来实现的无刷新的路由
-HashRouter 是通过 url 的 hash 属性来实现前端路由的
-Router 就是用来匹配 location 中的地址，匹配成功后渲染对应的组件
+## BrowserRouter,HashRouter
+
+这两个组件是路由器的容器，必须包在最外层
+
+1. BrowserRouter 是通过 h5 的 history 来实现的无刷新的路由
+
+```
+ReactDom.render(
+  <BrowserRouter>
+        <Route path="/" component={Home}/>
+    </BrowserRouter>
+)
+```
+
+2. HashRouter 是通过 url 的 hash 属性来实现前端路由的
+
+```
+ReactDom.render(
+  <HashRouter>
+        <Route path="/" component={Home}/>
+    </HashRouter>
+)
+```
+
+## Route
+
+Route 就是用来匹配 location 中的地址，匹配成功后渲染对应的组件
+
+## Link
+
 Link 是在页面内如何改变 URL 相当于 a 标签中的 href
+
+## Redirect
+
+匹配不上的会走
+
+```
+<Redirect from="/" to="/" />
+```
+
+## Switch
+
+Switch 内部只能包含 Route,Redirect,Router
+
+```
+<Switch>
+<Route exact path="/" component={Home}/>
+<Route path="/about" component={About}/>
+<Route path="/:user" component={User}/>
+<Route component={NoMatch}/>
+<Redirect from="/" to="/" />
+</Switch>
+```
