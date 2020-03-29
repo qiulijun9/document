@@ -1,28 +1,43 @@
-const obj = {};
-for (let i = 0; i < len; i++) {
-  !obj[arr[i]] && obj[arr[i]] = true && newArr.push(arr[i]);
-}
+let arr = [12, 3, 43, 546, 3, 3, 5, 6, 7, 8, 9, 5, 7, 78, 45]
+//set去重
+// let setArr = new Set(arr);
+// let newArr = Array.from(setArr);
+// console.log(newArr);
 
-const arr = [NaN, 1, 1, null, null, NaN, 2];
+//双层for 循环
 const newArr = [];
-let isHaveNaN = false;
+let isRepeat = false;
 for (let i = 0; i < arr.length; i++) {
-  const current = arr[i];
-  let s = true;
+  isRepeat = false;
   for (let j = i + 1; j < arr.length; j++) {
-    if (current === arr[j]) {
-      s = false;
+    if (arr[i] === arr[j]) {
+      isRepeat = true;
     }
   }
-  if (s) {
-    if (Number.isNaN(current) && !isHaveNaN) {
-      newArr.push(current);
-      isHaveNaN = true;
-    }
-    if (!isHaveNaN) {
-      newArr.push(current);
-    }
+  if (!isRepeat) {
+    newArr.push(arr[i]);
   }
 }
 
-console.log(newArr)
+console.log(newArr);
+
+
+// indexOf
+// let newArr = [];
+// for (let i = 0; i < arr.length; i++) {
+//   if (newArr.indexOf(arr[i]) === -1) {
+//     newArr.push(arr[i])
+//   }
+// }
+// console.log(newArr);
+
+//obj 
+// let obj = {}
+// let newArr = [];
+// for (let i = 0; i < arr.length; i++) {
+//   if (!obj[arr[i]]) {
+//     obj[arr[i]] = true;
+//     newArr.push(arr[i])
+//   }
+// }
+// console.log(newArr);
