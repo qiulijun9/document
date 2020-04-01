@@ -9,7 +9,7 @@ Itarator 接口函数是指 ：返回必须是一个对象，且包含 next()方
 # for..in 和 for ...of 区别
 
 for..in 只可以遍历对象，会遍历到原型链上的属性
-for..of 是遍历的统一标准，所以实现了 Iterator 的接口的对象都可遍历，(数组，对象等)
+for..of 是遍历的统一标准，所以实现了 Iterator 的接口的对象都可遍历，(数组，对象,set，map,字符串 等)
 
 # forEach Map for..in 和 for ...of 区别
 

@@ -1,5 +1,7 @@
 # 如何判断 this 的指向
 
+1. 全局上下文
+   this 指向 window，严格模式下指向 undefined
 1. 作为单独的函数调用
    　　 this 指向 window
 
@@ -37,6 +39,7 @@
    ```
 
 4. 箭头函数没有 this，继承外层上下文的 this
+5. dom 　事件绑定，指向绑定事件的元素
 
 # 改变 this 的指向　 call(),apply(),bind()
 

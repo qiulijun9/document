@@ -37,12 +37,15 @@ return response.json();
 .then(data => console.log(data))
 .catch(err => console.log(err))
 
-axios
+# axios
+
 它有以下几大特性：
 
 1. 可以在 node.js 中使用
 2. 提供了并发请求的接口
 3. 支持 Promise API
+4. 错误处理
+5. 支持 async await
 
    axios({
    method: 'GET',
@@ -50,3 +53,7 @@ axios
    })
    .then(res => {console.log(res)})
    .catch(err => {console.log(err)})
+
+# 执行多个并发请求
+
+axios.all([请求一，请求二])
