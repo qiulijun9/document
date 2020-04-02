@@ -138,9 +138,25 @@ module: {
       }
 ```
 
-## postcss 预处理器
+## postcss 预处理器　，处理浏览器前缀
 
 安装 postcss-loader autoprefixer -D
+
+## 消除冗余 css 代码
+
+Ｐ urifycss
+安装　 purifycss-webpack purify-css glob
+
+引入插件
+const purifycssWebpack =require('purifycss-webpack')
+使用
+new purifycssWebpack({paths:"路径"})
+
+## babel
+
+babel 　主要用来编译 js,esnext,jsx
+安装：
+　 babel-core babel-loader babel-present-env
 
 4. plugins:插件
    安装插件-----引入插件 -----使用插件
@@ -202,3 +218,18 @@ webpack
     "build": "webpack"
   },
 ```
+
+## 使用第三方库
+
+1. npm 下载　 import 引入
+   　即使不用，打包时也会打包进去
+
+2. providePlugins 全局引入　
+   引入包
+   使用
+   new webpack.ProvidePlugin({\$:"jquery"})
+   　不用的话，打包时不会打包进去，使用时才会打包
+
+## 提取第三方 js 库
+
+optimization.splitchunks

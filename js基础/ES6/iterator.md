@@ -13,10 +13,21 @@ for..of 是遍历的统一标准，所以实现了 Iterator 的接口的对象�
 
 # forEach Map for..in 和 for ...of 区别
 
-forEach 不能遍历对象 ，不能使用 break ,continue，return 跳出函数体
+forEach：
+
+1.  不能遍历对象
+2.  不能使用 break ,continue，return 跳出函数体
+3.  对于异步代码，forEach 并不能保证按顺序执行
+    中断方法：
+    　 try 　抛出异常，用 every 或 some 替换
+
 Map 返回一个新的数组
 for in 只能遍历对象，不能使用 break ,continue，return 跳出函数体
-for of 实现 Iterator 的接口的对象都可遍历，可以使用 break ,continue,return
+for of ：
+
+1.  实现 Iterator 的接口的对象都可遍历，
+2.  可以使用 break ,continue,return
+3.  可以保障异步任务按顺序执行
 
 # Generator
 

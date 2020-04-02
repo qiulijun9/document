@@ -1,8 +1,15 @@
 # 浏览器
 
+主线程执行的任务主要有：
+
+1. 渲染事件
+2. 用户交互事件
+3. js 脚本执行
+4. 网络请求，文件读写等
+
 异步任务分为宏任务和微任务：
-宏任务：script,setTimeout,setInterval,setTmmediate，I/O,messageChannel
-微任务：promise.then,await,MutationObserver，process.nextTick(nodejs)
+宏任务（普通任务队列和延迟队列）：script,setTimeout,setInterval,setTmmediate，I/O,messageChannel
+微任务：promise.then,await,MutationObserver，process.nextTick(nodejs)，v8 垃圾回收过程
 
 eventloop 操作步骤：
 
@@ -15,19 +22,26 @@ eventloop 操作步骤：
 
 https://juejin.im/post/5aae19b36fb9a028de447c33
 
-node 任务队列：
-timer(计时器)，执行 setTimeout ,setInterval 的 callback
-I/O 处理网络，流，tcp 的错误 callback
-idle,prepare.node 内部的一些事件
-poll(轮循)，执行 poll 中 I/O 队列检查定时器是否到时，执行完毕后，为空闲状态时会检查是否到达调用时间，如果到了执行 timer
-check(检查)，存放 setImmediate 的 callback
-close,关闭回调,如 socket
+node 执行的阶段：
 
-node 会先将宏任务队列执行完之后再去执行微任务队列
+1. 定时器回调阶段(timer):检查定时器如果到了时间，就执行回调。（setTimeout,setInterval）
+2. I/O 异常回调阶段：第一段结束后，并不能直接等待异步事件的响应，可以会进入此阶段，比如说 TCP 连接遇到 ECONNREFUSED，就会在这个时候执行回调。
+3. 空闲，预备阶段（第二阶段结束，poll 未触发之前）
+4. 轮循阶段(poll):异步操作(文件 I/O，网络 I/O)执行完，通知（通过 data,connect 等事件）主线程，使得事件循环到达 poll 阶段
+   到达这个阶段后：
+   如果有定时器存在，且时间到了，将回到 timer 阶段。
+   如果没有定时器，则去看回调函数对列
+   。 如果对列不为空，则依次执行
+   。 如果队列为空，检查是否有 setImmdiate
+   有则进入 check,没有则等待 callback 加入队列
+5. check 阶段：执行 setImmdiate 的回调
+6. 关闭事件的回调阶段例如 socket.destroy()， 'close' 事件的回调就会在这个阶段执行。
+
+浏览器的微任务是在每个相应的宏任务中执行的，而 nodejs 中的微任务是在不同阶段执行的。
 
 常见微任务：
 
 1.  process.nextTick
 2.  Promise
 
-process.nextTick 执行优先级高于 Promise
+process.nextTick 执行优先级高于 微任务的执行（promise）
