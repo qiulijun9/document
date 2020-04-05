@@ -2,6 +2,8 @@
 
 react 使用 jsx 代替 javaScript,利用 html 来创建虚拟 DOM,return 出来的内容
 上面的内容(方法)会执行一次,只有 jsx 依赖的值改变了，才会重新渲染页面
+jsx 本质：React.createElement 即 h 函数，返回 vnode
+第一个参数可能是 tag 或者 html ,组件名大写
 
 # hooks
 

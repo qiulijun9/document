@@ -27,6 +27,11 @@ connect(mapStateToProps, mapDispatchToProps)(MyComponent)
 4. 创建 store,使用 createStore 方法
    store 可以理解为有多个加工机器的总工厂
    提供 subscribe，dispatch，getState 这些方法。
+   异步 action createStore 中传入 redux-thunk 中间键
+   ```
+   对dispatch 进行改造
+   const store = createStore(reducer,applyMiddleware(thunk,logger))
+   ```
 5. 组件通过 useSelector, useDispatch 　来获取和修改 state 的值
 
 ```
@@ -44,7 +49,7 @@ connect(mapStateToProps, mapDispatchToProps)(MyComponent)
 
 ```
 
-用户通过 view 发出 action
+用户点击按钮 `通过 dispatch 发出 action
 然后 store 自动调用 reducer,并传入两个参数：当前 state 和 action ，reducer 会返回新的 state
 state 一旦有变化，store 就会调用监听函数
 listener 可以通过 store.getState() 得到当前状态。如果使用的是 React，这时可以触发重新渲染 View。
