@@ -20,6 +20,7 @@
 必须配合“不可变值”一起使用
 
 ```
+//自己写判断的方法
 shouldComponentUpdate(nextProps,nextState){
    if(nextProps.text !== this.props.text){
       return true;
@@ -30,9 +31,48 @@ shouldComponentUpdate(nextProps,nextState){
 
 # PureComponent,React.Memo
 
-PureComponent（纯组件），在 shouldComponentUpdate 中实现了浅比较
-Memo，函数组件中的 PureComponent
-浅比较，已经适用于大部分组件，不建议用深比较，比较耗费性能
+PureComponent（纯组件），在 shouldComponentUpdate 中实现了浅比较，必须依靠 class 组件才能使用。
+只需要 extends React.PureComponent 就能使组件成为 Pure Component。
+
+```
+import React from 'react';
+
+class TestC extends React.PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            count: 0
+        }
+    }
+    render() {
+        return (
+            <div>
+            { this.state.count }
+            <button onClick = {
+                () => this.setState({ count: 1 })
+            }> Click Me </button>
+            </div >
+        );
+    }
+}
+
+export default TestC;
+```
+
+React.Memo()，函数组件中的 PureComponent，是一个高阶组件，使用它来包裹一个已有的函数组件。
+因为函数组件中没有生命周期和 state,也不能去继承 React.PureComponent 类。
+浅比较，已经适用于大部分组件，不建议用深比较，比较耗费性能、
+
+```
+const Funcomponent = ()=> {
+    return (
+        <div>
+            Hiya! component
+        </div>
+    )
+}
+const MemodFuncComponent = React.memo(FunComponent)
+```
 
 # immutable.js
 

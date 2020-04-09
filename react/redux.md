@@ -14,17 +14,25 @@ connect(mapStateToProps, mapDispatchToProps)(MyComponent)
 
 1. 创建 store
    store 用来存放整个应用的 state,并将 action 和 reducer 联系起来
-   主要职能：
-   存储整个应用的 state
-   提供 getState() 方法获取 state
-   提供 dispatch(action) 方法更新 state
-   提供 subscribe(listener) 来注册、取消监听器
+   主要职能：存储整个应用的 state
 
-2. 创建 reducer
+   createStore 返回四个重要的属性 getState,subscribe,dispatch,replaceReducer
+   getState():获取 state
+   subscribe():采用发布订阅模式，进行观察者的订阅
+   dispatch()：派发 action
+   replaceReducer():用新的 reducer 替换现在的
+   createStore 接收三个参数：reducer,preloadedState,enhancer
+   reducer: 必须是函数
+   preloadedState： 初始状态
+
+   subscribe 方法其实是基于发布订阅模式的:
+   nextListeners 中存放之前订阅的数组
+
+2) 创建 reducer
    纯函数，用来处理事件，指明如何更新 state
-3. 创建 action，actionType
+3) 创建 action，actionType
    viewer 组件 发出 action 动作 ，action 是一个对象，必须要有 type 参数，定义 action 类型
-4. 创建 store,使用 createStore 方法
+4) 创建 store,使用 createStore 方法
    store 可以理解为有多个加工机器的总工厂
    提供 subscribe，dispatch，getState 这些方法。
    异步 action createStore 中传入 redux-thunk 中间键
@@ -32,7 +40,7 @@ connect(mapStateToProps, mapDispatchToProps)(MyComponent)
    对dispatch 进行改造
    const store = createStore(reducer,applyMiddleware(thunk,logger))
    ```
-5. 组件通过 useSelector, useDispatch 　来获取和修改 state 的值
+5) 组件通过 useSelector, useDispatch 　来获取和修改 state 的值
 
 ```
    import { useSelector, useDispatch } from 'react-redux';
@@ -63,10 +71,10 @@ MobX 允许有多个 store，而且这些 store 里的 state 可以直接修改�
 
 https://juejin.im/post/58bcb5821b69e6006b24ede0
 
-1. Redux 数据流流动很自然，可以充分利用时间回溯的特征，增强业务的可预测性；
-   MobX 没有那么自然的数据流动，也没有时间回溯的能力，但是 View 更新很精确，粒度控制很细。
-2. Redux 通过引入一些中间件来处理副作用；
-   MobX 没有中间件，副作用的处理比较自由。
+1. redux 将数据保存在单一的 store 中，mobx 将数据保存在多个 store 中
+2. redux 中的状态是不可变的，不能直接修改，要返回一个新的状态。
+   mobx 可以直接对数据进行更改
+3. mobx 相对比较简单，更多的使用面向对象的思维，redux 需要借助中间节来处理异步和副作用
 
 ```
 

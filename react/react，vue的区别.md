@@ -10,4 +10,5 @@
 
 1. racact 使用 jsx 拥抱 js, vue 使用模板拥抱 html
 2. react 是函数式编程，vue 是声明式编程
-3. react 学习成本更高，vue 把想要的都给你
+3. react 是单项数据流，vue 是双向绑定
+4. react 学习成本更高，vue 入门比较容易

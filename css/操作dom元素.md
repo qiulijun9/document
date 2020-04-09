@@ -27,3 +27,12 @@ element.appendChild(node)
 ## 删除节点
 
 element.removeChild(node)
+
+# 获取页面标签的个数
+
+1. 获取所有的标签 dom 节点 document.querySelectorAll('\*')
+2. 将节点集合转化成数组
+3. 获取每个节点的标签名 tagName
+4. 数组去重
+
+new Set([...document.querySelectorAll('*')].map(e=>e.tagName)).size

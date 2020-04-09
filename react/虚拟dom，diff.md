@@ -119,9 +119,9 @@ patch(container, vnode);
 
 # patch 函数
 
-patch(VNnode|element,VNnode)
+patch(Vnode|element,Vnode)
 实现过程：
-如果传入不是 VNnode，会先创建一个 VNode
+如果传入不是 Vnode，会先创建一个 VNode
 如果两个 VNnode 相同(通过判断 key 和 sel)，执行 patchVode 方法(该方法中判断 vnode 及其 children)
 如果两个 VNnode 不同，重建立 VNode removeVnodes addVnodes
 
