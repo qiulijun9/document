@@ -141,7 +141,7 @@ module: {
 ## postcss 预处理器　，处理浏览器前缀
 
 安装 postcss-loader autoprefixer -D
-
+配置.prettierrc.json
 ## 消除冗余 css 代码
 
 Ｐ urifycss
