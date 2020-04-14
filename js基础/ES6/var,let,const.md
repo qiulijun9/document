@@ -37,3 +37,34 @@ let b =2
     }
     console.log(foo); --- function
 -->
+
+# 输出
+```
+for(var i = 0; i < 3; i++ ){
+ setTimeout(()=>{
+  console.log(i)
+},1000)
+}
+输出 3 3 3
+```
+# 怎么让输出012
+```
+for(let i = 0; i < 3; i++ ){
+ setTimeout(()=>{
+  console.log(i)
+},1000)
+}
+输出 0 1 2
+执行过程  let i ------i = 0 ------ i < 3----执行代码 i++
+```
+利用闭包
+```
+for(var i = 0; i < 3; i++ ){
+ (function(j){
+    setTimeout(()=>{
+      console.log(j)
+    },1000)
+
+})(i)
+}
+```

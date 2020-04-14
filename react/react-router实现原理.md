@@ -17,7 +17,7 @@ hash 值可以通过 window.loaction.hash 得到
 
 # history 实现路由
 
-用 url 规范的路由，但跳转时不刷新页面,通过 history.pushState，window.onpopstate 来实现，需要后端配合（让访问的路径都跳到一个地址（如 index.html），由前端控制路由跳转）
+用 url 规范的路由，但跳转时不刷新页面,通过 history.pushState，history.replaceState，window.onpopstate 来实现，需要后端配合（让访问的路径都跳到一个地址（如 index.html），由前端控制路由跳转）
 history：属性
 history.length 返回回话中有多少条记录
 history.state 保存了 popstate 事件所传递过来的属性对象

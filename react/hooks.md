@@ -17,6 +17,7 @@ useStaste 是按顺序来存储值，修改值的,不能放在 if 条件语句�
 const [ count, setCount] =useState(0) //数组解构
 
 ## useEffect()
+可以把 useEffect Hook 看做 componentDidMount，componentDidUpdate 和 componentWillUnmount 这三个函数的组合。
 
 useEffect(()=>{
 return ()=>{
@@ -56,3 +57,19 @@ const inputEl = useRef(null)
 <input ref ={inputEl} type="text> //获取 dom 元素
 inputEl.current.value="hello"
 保存变量
+
+# useSelector 获取 redux 中的值
+
+const counter = useSelector(state => state.counter)
+
+# useDispatch()修改 redux 的值
+
+为了防止 dispatch 的回调函数传递给子组件时，建议用 useCallback 将它包起来
+
+```
+const dispatch = useDispatch()
+  const incrementCounter = useCallback(
+    () => dispatch({ type: 'increment-counter' }),
+    [dispatch]
+  )
+```
