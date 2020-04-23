@@ -17,7 +17,7 @@ promise 　是一种异步编程的解决方案。 引入解决了回调地狱�
 2、promise 在.then() 只有在状态改变的时候才会执行
 3、promise 的状态只能改一次，改变后可以在.then().catch()中获取
 4、catch 不管在哪里都能捕获到上层错误
-5、 返回任意一个非 promise 的值都会包裹成 poomise 对象
+5、 返回任意一个非 promise 的值都会包裹成 promise 对象
 6、.then .catch 返回值不能是 promise 本身，否则会造成死循环
 7、.then 或者 .catch 的参数期望是函数，传入非函数则会发生值穿透。
 8、用 throw 抛出来的异常.catch 会捕捉到， 用 new Error()抛出的错会被.then 捕捉到

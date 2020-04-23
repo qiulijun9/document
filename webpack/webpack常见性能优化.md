@@ -24,7 +24,7 @@
 
    (4)happyPack 开启多进程打包 ，主要针对babel-loader
 
-   (5)PareallelUglifyOkugin 多进程压缩js
+   (5)PareallelUglifyplugin 多进程压缩js
 
    (6)自动刷新(不可用于生产环境)
     devServer 中配置

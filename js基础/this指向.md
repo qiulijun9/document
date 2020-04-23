@@ -105,3 +105,41 @@ var Boy = function (name, age) {
 var g1 = new Girl ('qing');
 var b1 = new Boy('qianlong', 100);
 ```
+
+# 如何确定this 指向的
+满足一下条件：
+1. 计算MemberExpression 的结果赋值给ref
+  其实就是()左边的部分
+  ```
+  function foo() {
+    console.log(this)
+  }
+   foo(); // MemberExpression 是 foo
+  ```
+
+
+2. 判断ref 是否是Reference 类型
+  Reference构成：
+   .base value
+   .referenced name
+   .strict reference
+  如果 ref 是Reference,并且IsPropertyReference(ref) 为true，那么 this 的值为 GetBase(ref)
+  如果 ref 不是Reference，那么 this 的值为 undefined
+   ```
+   var foo = {
+     bar: function () {
+        return this;
+     }
+   };
+  foo.bar(); // foo
+
+  var BarReference = {
+    base :foo,
+    propertyName:'bar',
+    strict:false
+  }
+   ```
+3.  IsPropertyReference(ref) 是 true, 那么 this 的值为 GetBase(ref)
+ 上面例子IsPropertyReference(ref) 为true ,因为base value 是一个对象，所以可以确定this的值是foo
+
+4. (foo.bar = foo.bar)() ,(false || foo.bar)(),(foo.bar, foo.bar)(), 根据规范，因为使用了 GetValue，所以返回的不是 Reference 类型，所以this 为undefined

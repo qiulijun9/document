@@ -50,7 +50,7 @@ React-router-dom 包来介绍常用的 BrowserRouter、HashRouter、Link 和 Rou
 
 # 两者选择
 
-to B 推荐 hash ,简单医用，不需要后端配合
+to B 推荐 hash ,简单应用，不需要后端配合
 to C 可以考虑 history,但需要后端配合
 能简单就简单，考虑成本和收益
 

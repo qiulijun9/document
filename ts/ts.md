@@ -21,3 +21,7 @@ class Person {
 class bob extends Person{ constructor(name:string){
   super(name)
 }}
+
+## 泛型
+type GenericObject<T> = { key: T };
+var numberT: GenericObject<number> = { key: 123 };
