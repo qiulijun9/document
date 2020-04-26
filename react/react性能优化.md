@@ -4,10 +4,11 @@
 
 1. 合理使用 PureComponent,React.Memo 进行性能优化
 2. 列表渲染加 key
+3. 长列表优化
 3. 自定义事件，Dom 事件及时销毁
-4. 合理使用异步组件
+4. 合理使用异步组件， React.lazy()和<suspense>
 5. 减少函数 bind this 的次数
-6. 合理使用 immutable.js
+6. 合理使用 immutable.js或immer
 7. 前端通用的性能优化(图片懒加载等)
 8. webpack 层面的优化
 9. 使用 SSR
@@ -21,8 +22,10 @@
 
 ```
 //自己写判断的方法
+//接收新传进来的poprs和state
 shouldComponentUpdate(nextProps,nextState){
-   if(nextProps.text !== this.props.text){
+    //对比相关的变量，不一样则更新
+   if(nextProps.xxx !== this.props.xxx){
       return true;
    }
    return false;

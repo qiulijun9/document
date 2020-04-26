@@ -34,10 +34,18 @@
      热更新：新代码生效，网页不更新，状态不丢失
      需要自己配置哪些模块允许热更新，和更新之后回调
     
-   (8) DllPlugin 第三方库（react,vue）不用每次都打包，可以打包好后作为 dll 引用(不可用于生产环境)
-    1. DllPlugin 打包出dll.js,manifest.json文件, 配置webpack.dll.js
+   (8) DllPlugin 第三方库（react,vue）不用每次都打包，可以打包好后作为 dll 引用(不可用于生产环境)，不会跟着业务代码的改变而重新打包，只有当依赖自身发生版本变化时才会重新打包
+    1. DllPlugin 打包出dll.js, manifest.json文件, 配置webpack.dll.js
+
     2. 使用dll.js,manifest.json文件
       在index.html 中引入 dll.js ,在 dev 配置的DllReferencePlugin 中引入manifest.json
+      plugins: [
+        new webpack.DllReferencePlugin({
+          context: __dirname,
+          // manifest就是我们第一步中打包出来的json文件
+          manifest: require('./dist/vendor-manifest.json'),
+        })
+      ]
 
    ````
 

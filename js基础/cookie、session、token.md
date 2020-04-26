@@ -3,6 +3,9 @@ http 是无状态协议，服务器与浏览器为了进行会话跟踪，就必
 cookie:
 是服务器发送到浏览器并保存在本地的一小块数据，它会在浏览器再次访问同一服务器，在请求中携带过去（cookie 是不可跨域的），是浏览器保存用户信息的一种机制，用来记录用户的一些信息。
 
+cookie 的过期时间：
+可以通过expires 设置cookie 的过期时间，如果不设置的话，默认是临时存储的，浏览器进程关闭就自动销毁
+
 cookie 怎么设置的：
 
 1. 客户端发送 http 请求到服务端
@@ -28,10 +31,17 @@ sameSite：可以让 cookie 在跨站请求时不会被发送，阻止 CSRF 攻�
 lax 不允许携带 cookie,但是通过 a 连接可以携带
 strict 不允许携带 cookie，通过 a 顶层链接也不可以
 
-session:
+# session:
 是记录服务器和客户端会话状态的机制,session 是基于 cookie 实现的，session 存在服务端，sessionID 会保存在浏览器的 cookie 中
 
-cookie 和 session 的区别：
+## session 何时销毁？
+当浏览器关闭时并没有立即销毁，等到timeout 到期才销毁这个session.
+关闭浏览器只清除了和原回话的cookie,再次打开浏览器时，无法发送cookie,服务端会认为这是一个新的会话
+
+## session 的过期时间
+如果session一直活动，session就不会过期，后端可以设置过期时间，是从session 不活动开始计算过期时间，默认是30分钟
+
+## cookie 和 session 的区别：
 
 1. 安全性：session 比 cookie 更安全，session 存储在服务器端，cookie 存储在浏览器端。
 2. 存取值的类型不同：cookie 只支持字符串，session 可以设置任意类型

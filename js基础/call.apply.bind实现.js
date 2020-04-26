@@ -35,6 +35,7 @@ Function.prototype.call3 = function (context){
   delete context.fn;
   return result;
 }
+
 var foo ={
   value:1
 }
@@ -49,6 +50,14 @@ function bar (name, age){
  }
 }
 bar.call3(foo,"lili",20);
+//es6 实现
+Function.prototype.mycall = function (context = window,args){
+  let fn = Symbol("fn");
+  context[fn] = this;
+  let res = context[fn](...args);
+  delete context[fn];
+  return res;
+}
 
 // apply 实现
 

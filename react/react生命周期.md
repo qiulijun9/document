@@ -13,17 +13,17 @@ componentDidMount()
 
 # 更新时
 
-componentWillReceiveProps()
-组件接收到属性时触发，接收到新的 props 触发
-
 shouldComponentUpdate()
-当组件接收到新属性，或者状态改变时触发
+组件更新前，会被自动执行
 
 componentWillUpdate()
-组件即将被更新时触发，不能调用 setSate()
+组件即将被更新时触发，不能调用 setSate()，在shouldComponentUpdate之后执行，如果shouldComponentUpdate 返回true，则会执行，否则不会执行。
+
+render()
+对比新旧dom阶段，修改真实的dom
 
 componentDidUpdate()
-组件更新完成后触发
+组件更新后立即执行
 
 # 卸载时
 

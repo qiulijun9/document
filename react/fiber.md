@@ -10,7 +10,7 @@ js 是单线程的，且和 dom 渲染共用一个线程
 
 # 解决方案
 
-将阶段进行任务拆分计算阶段（commit 无法拆分）
+将阶段进行任务拆分计算阶段  两个阶段：Reconciliactionu阶段和commit阶段（无法拆分）
 Dom 需要渲染时暂停（通过 window.requestIdleCallback），空闲时恢复。
 
 # 何为 fiber
