@@ -11,6 +11,10 @@ promise 　是一种异步编程的解决方案。 引入解决了回调地狱�
 2. 返回值穿透
 3. 错误冒泡
 
+## promise 的状态
+pending --进行中  fulfilled-- 成功 rejected --失败
+状态改变不可逆，一旦改了就不能再改
+
 # Promise 注意事项
 
 1、promise 在.then()或.catch()的时候都会在内部生成一个新的 Promise 再返回

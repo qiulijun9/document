@@ -20,7 +20,7 @@ connect(mapStateToProps, mapDispatchToProps)(MyComponent)
 
    createStore 返回四个重要的属性 getState,subscribe,dispatch,replaceReducer
    -getState():获取 state
-   -subscribe():采用发布订阅模式，进行观察者的订阅
+   -subscribe():采用发布订阅模式，进行观察者的订阅，接收一个函数
    -dispatch()：派发 action
    -replaceReducer():用新的 reducer 替换现在的
 
@@ -67,11 +67,23 @@ connect(mapStateToProps, mapDispatchToProps)(MyComponent)
    }, [dispatch]);
 
 ```
+# redux 流程
+1. store 通过传入的reducer 创建初始的状态
+2. view通过store.getState()获取state中状态
+3. 通过view 发出 action
+4. action 通过调用store.dispatch()，把action和state 传入到reducer中
+5. reducer 根据actionType 会返回新的 state
+6. state 一旦有变化，store 就会调用监听函数,store.subscribe,通知view 说state 改了
+7. state 改变之后view 会重新渲染页面
 
-用户点击按钮 `通过 dispatch 发出 action
-然后 store 自动调用 reducer,并传入两个参数：当前 state 和 action ，reducer 会返回新的 state
-state 一旦有变化，store 就会调用监听函数
-listener 可以通过 store.getState() 得到当前状态。如果使用的是 React，这时可以触发重新渲染 View。
+
+# reducer 为什么要用纯函数，什么是纯函数
+ 纯函数：
+ 1. 不能修改传入的参数
+ 2. 不得调用非函数，Data.now(),Math.random()等
+ 3. 不得执行副作用的操作（不确定性），如请求和路由跳转（请求之后返回的数据可能是不确定的）
+
+因为reducer是依赖不可变值的，不能直接修改state中的值，需要返回新的值，因为reducer是纯函数，就能保障state不被修改
 
 # mobx
 

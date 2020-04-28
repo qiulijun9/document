@@ -61,6 +61,9 @@ const [count,dispatch]=useReducer((state,action)=>{
 解决子组件重复执行的问题
 useMemo(()=>{},[])
 
+# useCallback
+返回一个函数，通过引用相等性，来决定组件是否渲染，可以解决组件重复渲染的问题
+
 # useRef
 
 获取 dom

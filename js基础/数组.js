@@ -47,7 +47,7 @@
   console.log(arrp.join(".."), typeof arrp.join(".."))//2..3..4 string
 
   //判断数组中是否包含某个值
-  //indexOf ,如果存在返回元素下标，否则返回-1
+  //indexOf ,如果存在返回元素下标，否则返回-1，实现原理也是通过for循环来返回下标值
 
   let arr4 = [3,4,5,6,7,7];
   console.log(arr4.indexOf(7))//4

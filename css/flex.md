@@ -33,11 +33,11 @@ flex 子容器在主轴上如何伸缩（flex 值可以是数字也可以是单�
 
 order 子容器的排列顺序，数值越小越靠前
 
-flex-grow 子容器的放大比例
+flex-grow 项目放大的比例，只能是数字
 
-flex-shrink 子容器的缩小比例
+flex-shrink 项目缩小的比例，只能是数字 1 越大，2越小
 
-flex-basies 子子容器占据的主轴空间
+flex-basis  设置盒子的长度
 
 aligin-self 子容器如何沿交叉轴排列
 [auto(继承父元素) | flex-start | flex-end | center | baseline | stretch]
@@ -49,6 +49,6 @@ aligin-self 子容器如何沿交叉轴排列
 
 单行	  不指定高度  	是	        否
         固定高度	   是	         否（但是有设置flex-wrap:wrap;时，有效果）
-        
+
 多行	  不指定高度 	  是 	        否
         固定高度	   是	         是

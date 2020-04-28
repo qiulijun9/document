@@ -22,7 +22,7 @@ let arr = [12, 3, 43, 546, 3, 3, 5, 6, 7, 8, 9, 5, 7, 78, 45]
 // console.log(newArr);
 
 
-// indexOf
+// indexOf底层实现也是for 循环，时间复杂度同双层for 循环
 // let newArr = [];
 // for (let i = 0; i < arr.length; i++) {
 //   if (newArr.indexOf(arr[i]) === -1) {

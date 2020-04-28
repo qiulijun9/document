@@ -23,6 +23,29 @@
    如：react.min.js 是已经经过模块化打包的，所以就没必要在进行模块化打包，忽略对文件react.min.js 的递归解析
 
    (4)happyPack 开启多进程打包 ，主要针对babel-loader
+```
+  module.exports = {
+    module: {
+      rules: [
+        ...
+        {
+          test: /\.js$/,
+          // 问号后面的查询参数指定了处理这类文件的HappyPack实例的名字
+          loader: 'happypack/loader?id=happyBabel',
+          ...
+        },
+      ],
+    },
+    plugins: [
+      ...
+      new HappyPack({
+        // 这个HappyPack的“名字”就叫做happyBabel，和楼上的查询参数遥相呼应
+        id: 'happyBabel',
+        loaders: ['babel-loader?cacheDirectory']
+      })
+    ],
+  }
+```
 
    (5)PareallelUglifyplugin 多进程压缩js
 
