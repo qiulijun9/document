@@ -7,11 +7,11 @@ jsx 本质：React.createElement 即 h 函数，返回 vnode
 
 # hooks 和原生类组件的区别
  1. 在无需编写类的情况下也就是在使用函数组件时可以通过hooks来使用state,和生命周期等特性。
- 1. hook 可以在无需修改组件结构的情况下复用逻辑状态，比如直接使用useDispatch ,useSelector 来获取store中的数据，不用在用高阶函数的方法层层嵌套
- 2. 在原生class组件中，可能在componentDidMount,和componentDidUpdate 中获取数据，之后在componentWillUnmount 中清除。逻辑被拆分开，不相关的逻辑写在一起，容易造成bug.在hook中可以使用useEffect来处理这些副作用。
- 3. 在class组件中需要注意this的绑定，在子类中必须先调用super,然后才能使用this,class 不能进行很好的压缩、
- 4. 可以通过自定义hook把一些公用的逻辑提取出来，方便使用
- 5. 写一个class组件可能比较重，代码繁多，通过hook可以精简结构。
+ 2. hook 可以在无需修改组件结构的情况下复用逻辑状态，比如直接使用useDispatch ,useSelector 来获取store中的数据，不用在用高阶函数的方法层层嵌套
+ 3. 在原生class组件中，可能在componentDidMount,和componentDidUpdate 中获取数据，之后在componentWillUnmount 中清除。逻辑被拆分开，不相关的逻辑写在一起，容易造成bug.在hook中可以使用useEffect来处理这些副作用。
+ 4. 在class组件中需要注意this的绑定，在子类中必须先调用super,然后才能使用this,class 不能进行很好的压缩、
+ 5. 可以通过自定义hook把一些公用的逻辑提取出来，方便使用
+ 6. 写一个class组件可能比较重，代码繁多，通过hook可以精简结构。
 
 # hooks缺点
  1. hooks每次渲染都执行，所以要解决依赖的问题

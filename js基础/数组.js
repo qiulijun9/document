@@ -1,5 +1,5 @@
 /**
- * splice slice 方法
+ * splice 
   删除数组某一项(会改变原数组) splice(index,删除个数，[添加元素可选])
  * 
  *  */ 
@@ -43,7 +43,7 @@
   //concat() 连接两个数组 
   //console.log(arrp.concat([3,4,5]))//[ 2, 3, 4, 3, 4, 5 ]
 
-  //join() 通过指定的分隔符来分隔成字符串
+  //join() 通过指定的分隔符来分隔成字符串，返回的是字符串
   console.log(arrp.join(".."), typeof arrp.join(".."))//2..3..4 string
 
   //判断数组中是否包含某个值
@@ -62,7 +62,7 @@
 
   //findIndex(callback) 返回满足条件的第一元素的下标，没有返回-1
   let result2  =  arr4.findIndex((item)=>{return item >3})
-  console.log(result2);
+  // console.log(result2);
 
 
   //数组扁平化
@@ -70,4 +70,62 @@
   let str = JSON.stringify(ary);
   // 方法一  console.log(ary.flat(Infinity))
   
-  //方法二 console.log(str.replace(/(\[|\])/g,'').split(","))
+  //方法二 console.log(str.replace(/(\[|\])/g,'').split(","))；
+
+
+  function getBrackets(len){
+    let str ="";
+    for(let i=0;i<= len;i++){
+      if(Math.floor(Math.random()*10) >=  5){
+        str +="("
+      }else{
+        str+= ")"
+      }
+    }
+    return str;
+  }
+
+  let str2 = getBrackets(8);
+   console.log(str2);
+
+   let s ="()())()((";
+
+   function getNotBracketsIndex(str){
+     let arr = [];
+     for(let i =0; i<str.length;i++){
+      if(str[i] === "("){
+        arr.push(i)
+      }else{
+        arr.pop();
+      }
+     }
+     return arr;
+   }
+   console.log(getNotBracketsIndex(s))
+
+   // 很大的两个数相加
+   let a = "9007199254740991";
+   let b = "1234567899999999999";
+   function add(a,b){
+     let maxLength = Math.max(a.length,b.length);
+     a = a.padStart(maxLength,0);
+     b = b.padStart(maxLength,0);
+     let t = 0;
+     let f = 0;
+     let sum = "";
+     for(let i = maxLength-1;i>=0;i--){
+       t = parseInt(a[i]) +parseInt(b[i]) +f;
+       f = Math.floor(t/10);
+       sum = t%10 + sum;
+     }
+     if(f == 1){
+      sum ="1" +sum;
+     }
+     return sum;
+   }
+   console.log(add(a,b))
+
+   //数组转数字
+   let arrn = [2,3,5,6,7];
+   let strn = arrn.join("");
+  //  console.log(parseInt(strn)); 
