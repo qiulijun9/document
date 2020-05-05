@@ -9,9 +9,14 @@
 
 # react-redux
 
-提供 Provider 和 connect 两个 API,Provide 将 store 放到 props 中，省去了 import 这一步
-connect 将 getState,dispatch 合并进了 props,并自动订阅更新
+提供 Provider 和 connect 两个 API,
+Provide 将 store 放到 props 中，省去了 import 这一步,从外部封装了整个应用,并向connect模块传递store
+connect 将 getState,dispatch 合并进了 props,并自动订阅更新,复制连接react 和redux
 connect(mapStateToProps, mapDispatchToProps)(MyComponent)
+ 1. 获取state,通过store.getState()获取整个state
+ 2. 包装原组件:将state 和dispatch通过props 传给原组件
+ 3. 监听store.tree的变化,connect缓存了store.tree 的状态,通过当前state状态和变更前state状态进行比较,从而确定是否调用this.setState()方法触发Connect及其子组件的重新渲染
+
 
 使用步骤：
 
@@ -100,7 +105,7 @@ https://juejin.im/post/58bcb5821b69e6006b24ede0
    mobx 可以直接对数据进行更改
 3. mobx 相对比较简单，更多的使用面向对象的思维，redux 需要借助中间节来处理异步和副作用
 4. redux 修改数据时比较繁琐，mobx 通过注解和 action 就可以定义修改变量
+5. mobx 适合数据不复杂的应用,很多状态没法回溯,redux 适用于回溯需求的应用
 
-```
 
-```
+

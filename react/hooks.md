@@ -15,6 +15,8 @@ jsx 本质：React.createElement 即 h 函数，返回 vnode
 
 # hooks缺点
  1. hooks每次渲染都执行，所以要解决依赖的问题
+ 2. 在闭包场景中可能用到旧的state和props
+ 3. 内部实现不直观,依赖一份可变的状态,不在那么纯
 
 # hooks注意
 

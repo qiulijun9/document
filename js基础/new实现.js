@@ -34,3 +34,14 @@ Otaku.prototype.sayYourName = function () {
 var person = ObjectFactory(Otaku,"xiaohuang",18);
 console.log(person.name);
 console.log(person.habit);
+
+
+//模拟二
+function newFactory(Constructor,...arg){
+  let obj = new Object();
+  obj._proto_ = Object.create(Constructor.prototype);
+  let res = Constructor.apply(obj,arg);
+  let isObject = typeof obj ==="object" || typeof obj === null;
+  let isFunction = typeof obj === "function"
+  return isObject || isFunction ? res :obj;
+}

@@ -17,30 +17,31 @@
 3. 作为对象的方法被调用
    谁调用了这个方法，this 就指向谁
 
-   ```
-   let obj = {
-     name:'aa',
-     getName:function(){
-       console.log(this)// obj
-       }
-     }
-   obj.getName()
-   ```
+```js
+let obj = {
+  name:'aa',
+    getName:function(){
+     console.log(this)// obj
+    }
+}
+obj.getName()
+```
 
 4. 作为构造函数被调用
    在构造方法中,当使用 new 　调用方法时， this 指向 new 出来的实例
-
-   ```
+```js
    function Func() {
     this.name = "大白";
    }
    let fn = new Func();
    console.log(fn.name) // 大白
-   ```
+```
 
-5. 箭头函数没有 this，继承外层上下文的 this
+5. 箭头函数没有 this，this会指向当前最近的非箭头函数的this
 6. dom 　事件绑定，指向绑定事件的元素
 
+# 优先级
+new > call、apply、bind > 对象.方法 > 直接调用。
 # 改变 this 的指向　 call(),apply(),bind()
 
 区别：
@@ -50,7 +51,7 @@
 3. call(this,arg1,arg2,arg3) call 接收参数列表
 4. apply call 是立即调用
 
-```
+```js
 
 let obj = {
   getName:function fun(x,y){

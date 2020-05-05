@@ -49,19 +49,33 @@ function bar (name, age){
     age: age
  }
 }
-bar.call3(foo,"lili",20);
-//es6 实现
-Function.prototype.mycall = function (context = window,args){
-  let fn = Symbol("fn");
-  context[fn] = this;
-  let res = context[fn](...args);
-  delete context[fn];
-  return res;
+// bar.call3(foo,"lili",20);
+
+
+//es6 实现call
+Function.prototype.mycall = function (context, ...args) {
+  var context = context || window;
+  let fn = Symbol('fn');
+  context.fn =this;
+  const result = eval(`context.fn(...args)`)
+  delete context.fn;
+  return result;
+}
+// bar.mycall(foo,"lili",20);
+
+//es6实现 apply
+Function.prototype.myApply = function (context, args) {
+  var context =context || window;
+  let fn = Symbol('fn');
+  context.fn = this;
+  const result = eval('context.fn(...args)');
+  delete context.fn;
+  return result;
 }
 
 // apply 实现
 
-Function.prototype.apply2 = function(context, arr){
+Function.prototype.apply2 = function(context, arr) {
   var context = context || window;
   context.fn = this;
   var result ;
@@ -92,15 +106,16 @@ function bar (name, age){
  }
 }
 // bar.apply2(foo,["lili",20]);
+// bar.myApply(foo,["lili",20]);
 
 //bind  接收参数，返回函数
-Function.prototype.bind2 = function (context){
+Function.prototype.myBind = function (context){
 
   if(typeof this !== "function"){
    throw new Error("not is a function")
   }
   var self = this;
-  //获取bind2 参数从第二个到最后一个参数
+  //获取myBind 参数从第二个到最后一个参数
   var args = Array.prototype.slice.call(arguments,1);
   var fNOP = function (){};
   var fbound =  function(){
@@ -111,3 +126,4 @@ Function.prototype.bind2 = function (context){
   fbound.prototype = new fNOP();
   return fbound;
 }
+bar.myBind(foo);

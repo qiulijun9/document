@@ -1,5 +1,5 @@
 # 过时的闭包
-```
+```js
 function createIncrement(i) {
   let value = 0;
   function increment() {
@@ -28,7 +28,7 @@ newLog()//"Current value is 3"---提供最新的闭包
 
 # react hook 闭包
 
-```
+```js
 function WatchCount() {
   const [count, setCount] = useState(0);
 
