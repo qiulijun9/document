@@ -13,10 +13,54 @@ immer 中使用了 Es6 的 Proxy 对象，当需要改变某个属性值时，�
 new Proxy 第一个参数是目标对象，第二个参数是一个对象，对象中有 set 和 get 方法，返回一个 Proxy 对象，
 因为 Proxy 只会做第一层的代理,在取值和修改值的时候都会调用 set 和 get 方法，在 get 方法中会缓存之前访问过的值。然后返回新的代理。当修改过后，就会返回新值。
 
-import produce from 'immer'
+```js
+import produce from 'immer';
 
-const next = produce(state,draftState=>{
-draftState.a.b=1
+let obj ={
+    name :"xi",
+    a:{
+        age:2
+    }
+  }
+let obj2 = produce(obj, draft =>{
+  draft.a.age =90;
 })
+
+let currentState = {
+    a: [],
+    p: {
+      x: 1
+    }
+}
+//第二种使用
+let producer = produce((draft)=>{
+  draft.p.x = 4;
+})
+
+let obj3= producer(currentState);
+
+//react 中使用
+let person = {
+  members: [
+   {
+     name: 'ronffy',
+      age: 30
+   }
+  ]
+}
+const [personState,setPersonState] = useState(person);
+setPersonState(produce(person,draft =>{
+      draft.members[0].age =50;
+ }));
+
+//reducer
+const reducer = (state, action) => produce(state, draft => {
+  switch (action.type) {
+    case 'ADD_AGE':
+      draft.members[0].age++;
+  }
+})
+```
+
 
 先生成 state 的代理 draftState，再通过 get,set 方法浅拷贝修改链上的值,作为新的 immutable 对象返回
