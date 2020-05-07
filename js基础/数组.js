@@ -67,9 +67,9 @@
 
   //数组扁平化
   let ary = [1, [2, [3, [4, 5]]], 6];
-  let str = JSON.stringify(ary);
-  // 方法一  console.log(ary.flat(Infinity))
   
+  // 方法一  console.log(ary.flat(Infinity))
+  let str = JSON.stringify(ary);
   //方法二 console.log(str.replace(/(\[|\])/g,'').split(","))；
 
 

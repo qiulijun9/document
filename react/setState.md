@@ -91,4 +91,4 @@ setTimeout ,setInterval,自定义 dom 事件
 先执行开始的逻辑(initalize)-----执行函数体-----执行结束机制(close)
 
 
-# 
+

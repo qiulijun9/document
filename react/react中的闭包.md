@@ -67,4 +67,4 @@ function WatchCount() {
 4. useReducer (),state 作为参数传入reducer中，无论何时调用dispatch,reducer中得到的state中都是最新的
   const [state, dispatch] = useReducer(reducer, initState);
 
-4. 把参数提到函数外面
+5. 把参数提到函数外面
