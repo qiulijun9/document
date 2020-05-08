@@ -12,7 +12,8 @@ promise 　是一种异步编程的解决方案。 引入解决了回调地狱�
 3. 错误冒泡
 
 ## promise 的状态
-pending --进行中  fulfilled-- 成功 rejected --失败
+
+pending --进行中 fulfilled-- 成功 rejected --失败
 状态改变不可逆，一旦改了就不能再改
 
 # Promise 注意事项
@@ -41,4 +42,12 @@ pending --进行中  fulfilled-- 成功 rejected --失败
 # Generator
 
 1、Generator 函数 function 关键字和函数名之间有个\*，函数体内使用 yield 表达式
+
 2、函数内部调用 next()方法，就会返回 value（yield 表示式后的值） 和 down（是否遍历结束） 两个属性
+
+# async/await 的原理
+
+是 Generator 的语法糖，将\* 换成了 async，yield 换成了 await
+
+异步操作同步化
+Generator 可以把异步操作写在 yield 表达式里面,等到 next()方法在执行.
