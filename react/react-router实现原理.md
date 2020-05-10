@@ -25,10 +25,11 @@ history：方法
 history.back() 回退
 history.forward()前进
 history.go() 跳转某个记录页
-× history.pushState(obj,title,url) 将给定的数据添加到浏览器的会话历史栈中，pushState 会改变当前 url,但是不会刷新
 
-history.replaceState() 将当前会话的 url 替换成指定的数据，replaceState 会改变当前 url,但是不会刷新
-× window.onpopstate () 监听浏览器前进后退
+\* history.pushState(obj,title,url) 将给定的数据添加到浏览器的会话历史栈中，pushState 会改变当前 url,但是不会刷新
+
+\*history.replaceState() 将当前会话的 url 替换成指定的数据，replaceState 会改变当前 url,但是不会刷新
+window.onpopstate () 监听浏览器前进后退
 
 ```
  window.onpopstate =(event)=>{
@@ -44,7 +45,7 @@ hisory 为依据来实现路由的优点：
 
 缺点：
 兼容性不如 hash
-需要后端做相应的配置，否则直接访问子页面会出现 404 错误
+需要后端做相应的配置，否则直接访问子页面会出现 404 错误.前端的 url 必须和实际向后端发送请求的 url 一致,如果后端没处理,可能返回 404
 
 React-router-dom 包来介绍常用的 BrowserRouter、HashRouter、Link 和 Route 等。
 

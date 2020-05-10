@@ -28,7 +28,7 @@ const handleClick = function (){
 setState 异步更新的话，更新前会被合并
 传入对象 会被合并，执行结果只一次
 
-react 在遇到传递给setState()多次调用时，会将其合并成一个进行批处理。（如果传递的对象有相同的键，会通过Object.assigin()将其合并成一个），因为setState存在异步更新，当需要依赖上一个值计算下一个值时，可能会出现问题，所以不应该依赖他们的值计算下一个
+react 在遇到传递给 setState()多次调用时，会将其合并成一个进行批处理。（如果传递的对象有相同的键，会通过 Object.assigin()将其合并成一个），因为 setState 存在异步更新，当需要依赖上一个值计算下一个值时，可能会出现问题，所以不应该依赖他们的值计算下一个
 
 ```
 会合并成一个   count :1
@@ -90,5 +90,9 @@ setTimeout ,setInterval,自定义 dom 事件
 
 先执行开始的逻辑(initalize)-----执行函数体-----执行结束机制(close)
 
+# 如果想在 setState 中获取立即更新的值
 
-
+在 setState 的回调中做处理
+this.setState({index:this.state.index+1},()=>{
+console.log(this.state.index)
+})

@@ -31,7 +31,7 @@ flex 子容器在主轴上如何伸缩（flex 值可以是数字也可以是单�
 是 flex-grow,flex-thrink,flex-basis 的缩写默认为(0 1 auto),
 当为 none 时值为(0 0 auto)
 当为 auto 时值为(1 1 auto)
-当为 数字 时值为(1 1 0%)
+当为 数字 1 时值为(1 1 0%)
 
 order 子容器的排列顺序，数值越小越靠前,默认为 0
 

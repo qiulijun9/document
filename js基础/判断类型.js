@@ -13,7 +13,7 @@ console.log(typeof {}); //object
 console.log(typeof []); //object
 
 /**
- * instanceof 不能检测基本类型
+ * instanceof 不能检测基本类型,主要检测某构造函数的原型对象是不是在对象的原型链上
  * instanceof 可以用来判断对象,返回true/false，instanceof 是基于原型链的查询，只要处于原型链就为true
  */
 console.log('------------------');
@@ -45,6 +45,15 @@ console.log(111, isNull2({}));
 console.log('nan', isNaN(NaN));
 //Object.is() 比较两个对象完全相等
 console.log(Object.is(NaN, NaN));
+
+/**
+ * 判断数组
+ *
+ */
+let arra = [34, 4, 6, 7];
+console.log(33, arra instanceof Array);
+console.log(Object.prototype.toString.call(arra) === '[object Array]');
+console.log(33, Array.isArray(arra)); //Array.isArray()也是用Object.prototype.toString.call 来实现的
 //instanceof 能否判断基本类型？？？？  能，需通过symbol.hasInstance方法重写instanceof 方法
 class yanzhengNumber {
 	static [Symbol.hasInstance](x) {
@@ -64,6 +73,7 @@ function myInstanceof(left, right) {
 		if (proto === null) {
 			return false;
 		}
+		//如果原型对象=== 对象的原型
 		if (proto === right.prototype) {
 			return true;
 		}

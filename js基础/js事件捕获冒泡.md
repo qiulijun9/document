@@ -27,3 +27,10 @@ useCapture: true/false true 指定事件在捕获阶段处理 false(默认) 指�
 
 1. event.stopPropagation()
 2. return false 同时也阻止了事件本身的事件
+
+# 所有的事件都有冒泡吗,以下几个事件没有冒泡
+
+onblur
+onfocus
+onmouseenter
+onmouseleave

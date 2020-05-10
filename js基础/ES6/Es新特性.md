@@ -37,7 +37,7 @@ Es10
 2. 数组扩展
    sort()稳定 flat()扁平化数组 flatMap() 映射且扁平化数组
 3. toString()
-   catch() 省略参数
+4. catch() 省略参数
 
 Es11
 
