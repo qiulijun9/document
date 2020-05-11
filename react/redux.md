@@ -1,5 +1,6 @@
 # redux
 
+作用:解决跨层级传递数据的弊端,提供一个全局的 state 以供使用.
 获取 store 中存储公用状态：
 
 1. 引入 store
@@ -10,15 +11,27 @@
 # react-redux
 
 提供 Provider 和 connect 两个 API,
-Provide 将 store 放到 props 中，省去了 import 这一步,从外部封装了整个应用,并向connect模块传递store
-connect 将 getState,dispatch 合并进了 props,并自动订阅更新,复制连接react 和redux
-connect(mapStateToProps, mapDispatchToProps)(MyComponent)
- 1. 获取state,通过store.getState()获取整个state
- 2. 包装原组件:将state 和dispatch通过props 传给原组件
- 3. 监听store.tree的变化,connect缓存了store.tree 的状态,通过当前state状态和变更前state状态进行比较,从而确定是否调用this.setState()方法触发Connect及其子组件的重新渲染
 
+## Provide
 
-使用步骤：
+1.  将 store 放到 props 中，省去了 import 这一步,
+2.  从外部封装了整个应用,使整个应用成为 Provide 的子组件.
+3.  接收 redux 的 store 作为 props ,通过 context 对象传递给子组件的 connect
+
+## connect(mapStateToProps, mapDispatchToProps)(MyComponent)高阶函数
+
+connect 将 getState,dispatch 合并进了 props,并自动订阅更新,复制连接 react 和 redux
+
+1.  获取 state:connect 通过 context 获取 store,再通过 store.getState()获取整个 state
+2.  包装原组件:connect 返回一个 wrapWithConnect 函数,函数中又返回了一个 Connect 组件.将 state 和 dispatch 通过 props 传给原组件.
+3.  监听 store.tree 的变化:connect 缓存了 store.tree 的状态,通过当前 state 状态和变更前 state 状态进行比较,从而确定是否调用 this.setState()方法触发 Connect 及其子组件的重新渲染
+
+### mapDispatchToProps(dispatch, props)
+
+可以是一个函数,也可以是一个对象
+dispath 是 store.dispatch()函数
+
+# redux 使用步骤：
 
 1. 创建 store createStore()
    主要职能：store 用来存放整个应用的 state,并将 action 和 reducer 联系起来
@@ -72,23 +85,26 @@ connect(mapStateToProps, mapDispatchToProps)(MyComponent)
    }, [dispatch]);
 
 ```
-# redux 流程
-1. store 通过传入的reducer 创建初始的状态
-2. view通过store.getState()获取state中状态
-3. 通过view 发出 action
-4. action 通过调用store.dispatch()，把action和state 传入到reducer中
-5. reducer 根据actionType 会返回新的 state
-6. state 一旦有变化，store 就会调用监听函数,store.subscribe,通知view 说state 改了
-7. state 改变之后view 会重新渲染页面
 
+# redux 流程
+
+1. store 通过传入的 reducer 创建初始的状态
+2. view 通过 store.getState()获取 state 中状态
+3. 通过 view 发出 action
+4. action 通过调用 store.dispatch()，把 action 和 state 传入到 reducer 中
+5. reducer 根据 actionType 会返回新的 state
+6. state 一旦有变化，store 就会调用监听函数,store.subscribe,通知 view 说 state 改了
+7. state 改变之后 view 会重新渲染页面
 
 # reducer 为什么要用纯函数，什么是纯函数
- 纯函数：
- 1. 不能修改传入的参数
- 2. 不得调用非函数，Data.now(),Math.random()等
- 3. 不得执行副作用的操作（不确定性），如请求和路由跳转（请求之后返回的数据可能是不确定的）
 
-因为reducer是依赖不可变值的，不能直接修改state中的值，需要返回新的值，因为reducer是纯函数，就能保障state不被修改
+纯函数：
+
+1.  不能修改传入的参数
+2.  不得调用非函数，Data.now(),Math.random()等
+3.  不得执行副作用的操作（不确定性），如请求和路由跳转（请求之后返回的数据可能是不确定的）
+
+因为 reducer 是依赖不可变值的，不能直接修改 state 中的值，需要返回新的值，因为 reducer 是纯函数，就能保障 state 不被修改
 
 # mobx
 
@@ -106,6 +122,3 @@ https://juejin.im/post/58bcb5821b69e6006b24ede0
 3. mobx 相对比较简单，更多的使用面向对象的思维，redux 需要借助中间节来处理异步和副作用
 4. redux 修改数据时比较繁琐，mobx 通过注解和 action 就可以定义修改变量
 5. mobx 适合数据不复杂的应用,很多状态没法回溯,redux 适用于回溯需求的应用
-
-
-

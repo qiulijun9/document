@@ -8,9 +8,15 @@ console.log(typeof true); //boolean
 console.log(typeof undefined); //undefined
 console.log(typeof 3n); //bigint
 console.log(typeof Symbol()); //symbol
+function a() {}
+console.log(typeof a); //function
 console.log(typeof null); //object
 console.log(typeof {}); //object
 console.log(typeof []); //object
+var date = new Date();
+console.log(typeof date); //object
+var error = new Error();
+console.log(typeof error); //object
 
 /**
  * instanceof 不能检测基本类型,主要检测某构造函数的原型对象是不是在对象的原型链上
@@ -84,6 +90,8 @@ console.log(myInstanceof(new String('111'), String)); //true
 
 /**
  * Object.prototype.toString
+ * 会返回一个由 "[object " 和 class 和 "]" 组成的字符串
+ * class 是要判断的类型的内部属性
  */
 console.log('------------------');
 console.log(Object.prototype.toString.call(1)); //"[object Number]"
@@ -94,3 +102,8 @@ console.log(Object.prototype.toString.call(undefined)); //"[object Undefined]"
 console.log(Object.prototype.toString.call({ name: 'xue' })); //"[object Object]"
 console.log(Object.prototype.toString.call(() => {})); // "[object Function]"
 console.log(Object.prototype.toString.call(['A', 'b', 'c'])); //"[object Array]"
+console.log(Object.prototype.toString.call(date)); //"[object Date]"
+console.log(Object.prototype.toString.call(error)); //"[object Error]"
+console.log(Object.prototype.toString.call(/a/g)); //"[object RegExp]"
+console.log(Object.prototype.toString.call(Math)); // [object Math]
+console.log(Object.prototype.toString.call(JSON)); // [object JSON]
