@@ -18,18 +18,33 @@
 // let b =a.myTrim();
 // console.log(b)
 
-function trim (str){
-  let newStr = str;
-  while(true){
-    if(newStr.indexOf(' ') === 0){
-      newStr = newStr.substring(1,str.length -0)
-    }
-    if(newStr.lastIndexOf(' ') === str.length - 1 ){
-      newStr = newStr.substring(0,str.length -1)
-    }else{
-      return newStr
-    }
-  }
- 
+function trim(str) {
+	let newStr = str;
+	while (true) {
+		if (newStr.indexOf(' ') === 0) {
+			newStr = newStr.substring(1, str.length - 0);
+		}
+		if (newStr.lastIndexOf(' ') === str.length - 1) {
+			newStr = newStr.substring(0, str.length - 1);
+		} else {
+			return newStr;
+		}
+	}
 }
-console.log(trim(" abnv v "))
+// console.log(trim(' abnv v '));
+
+let obj = [
+	{ name: 'a', age: 21 },
+	{ name: 'b', age: 20 },
+	{ name: 'c', age: 22 },
+];
+
+function getSortObj(arr) {
+	return obj
+		.sort((a, b) => {
+			return a.age - b.age;
+		})
+		.map(item => {
+			return item.name;
+		});
+}

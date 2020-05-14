@@ -57,3 +57,13 @@ return response.json();
 # 执行多个并发请求
 
 axios.all([请求一，请求二])
+
+# 取消接口请求
+
+```js
+axios.get('http://...', {
+	cancelToken: new CancelToken(function exector(c) {
+		//c 就是构造函数中自带的取消请求的函数
+	}),
+});
+```

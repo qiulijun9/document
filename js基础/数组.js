@@ -69,12 +69,94 @@ let result2 = arr4.findIndex(item => {
 });
 // console.log(result2);
 
+//sort 排序 返回排序好的数组,参数必须是函数,默认是按升序排列的,是按字符串的unicode 编码来进行排序
+let err = ['George', 'John', 'Thoma', 'James', 'Adrew', 'Martin'];
+// console.log(err.sort());
+// let err = [2, 353, 4, 2, 34, 5, 66, 0];
+console.log(
+	err.sort((a, b) => {
+		return a - b;
+	})
+);
+// sort 还可以对对象的属性进行排序,通过传入的参数来进行排序
+let obj = [
+	{ name: 'a', age: 21 },
+	{ name: 'b', age: 20 },
+	{ name: 'c', age: 22 },
+];
+let newObj = obj.sort((a, b) => {
+	return a.age - b.age;
+});
+// console.log(111, newObj);
+
+//filter(fnunction(currentValue,index,arr),this)  根据函数返回一个过滤后(符合条件)的新数组,不会改变原数组
+
+let farr = [11, 34, 45, 6, 8, 9];
+console.log(
+	farr.filter(a => {
+		return a > 10;
+	})
+);
+
+// reduce(function(累加器上一次返回的值,当前值,index,array),初始值) 不会改变原数组
+
+let rarr = [1, 2, 3, 4];
+let results = rarr.reduce((perval, currentVal, index) => {
+	return perval + currentVal;
+}, 0);
+console.log(rarr, results);
+// reduce  应用
+//reduce 去重
+let arrR = [1, 2, 3, 1, 3, 4, 5, 6, 3];
+// let arrRes = arrR.reduce((pre, value, index) => {
+// 	if (!pre.includes(value)) {
+// 		return pre.concat(value);
+// 	} else {
+// 		return pre;
+// 	}
+// }, []);
+
+// reduce 扁平化数组
+let flarr = [1, 2, [3, 4], [[[3, 5, 6]]]];
+// let arrRes = function (arr) {
+// 	return arr.reduce((pre, val) => {
+// 		return pre.concat(Array.isArray(val) ? arrRes(val) : val);
+// 	}, []);
+// };
+
+//reduce  计算元素出现的次数
+let reduceCountArr = [1, 2, 3, 4, 4, 5, 5];
+let reduceCountRes = reduceCountArr.reduce((pre, val) => {
+	let count = 0;
+	if (val in pre) {
+		pre[val]++;
+	} else {
+		pre[val] = 1;
+	}
+	return pre;
+}, {});
+
+console.log(5555, reduceCountRes);
+
 //数组扁平化
 let ary = [1, [2, [3, [4, 5]]], 6];
 
 // 方法一  console.log(ary.flat(Infinity))
 let str = JSON.stringify(ary);
 //方法二 console.log(str.replace(/(\[|\])/g,'').split(","))；
+
+function flat(arr) {
+	let arrs = [];
+	arr.forEach(item => {
+		if (Array.isArray(item)) {
+			arrs = arrs.concat(flat(item));
+		} else {
+			arrs.push(item);
+		}
+	});
+	return arrs;
+}
+console.log(11111, flat(flarr));
 
 function getBrackets(len) {
 	let str = '';

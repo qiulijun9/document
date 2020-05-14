@@ -86,15 +86,19 @@ margin: 100px;
 
 ## 解决高度塌陷：
 
-1. clear 属性(清除浮动) 1)可以在父元素尾部追加空的 div 标签，并利用 clear:both 解决塌陷 <div style="clear:both;"></div> 2)通过 after 伪元素设置来清除浮动 ,上面例子 2
-   .parent::after{
-   content: "";
-   display: block;
-   clear: both;
-   }
+1. clear 属性(清除浮动)
+
+1)可以在父元素尾部追加空的 div 标签，并利用 clear:both 解决塌陷 <div style="clear:both;"></div>
+
+2)通过 after 伪元素设置来清除浮动 ,上面例子 2
+.parent::after{
+content: "";
+display: block;
+clear: both;
+}
 
 2. BFC
-   给父元素也设置 BFC
+   给父元素也设置 BFC,例如给父级元素添加 overflow:hidden 属性
 
 清除浮动的原理：
 可以设置元素禁止浮动元素出现在它的左侧，右侧，或者双侧。
