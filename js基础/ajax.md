@@ -37,6 +37,11 @@ return response.json();
 .then(data => console.log(data))
 .catch(err => console.log(err))
 
+# fetch 取消请求
+
+fetch 请求成功之后会返回一个 Response 对象,
+timeoutResp=new Response("timeout", { status: 504, statusText: "timeout " })
+
 # axios
 
 它有以下几大特性：

@@ -45,3 +45,9 @@ node 执行的阶段：
 2.  Promise
 
 process.nextTick 执行优先级高于 微任务的执行（promise）
+
+setTimeout: 允许推迟一定时间间隔后运行
+setInterval:一段时间间隔之后,重复执行该函数
+
+window.requestAnimationFrame(callback):执行动画,由浏览器执行回调函数.不需要设置时间间隔.
+由于 setTimeout 执行的时候可能会有延迟,发生丢帧的现象. 显示器 60Hz 的刷新频率,requestAnimationFrame 一般会根据刷新频率决定的时间,每刷新一次的间隔执行一次回调函数,不会发生丢帧的现象.也不会卡顿.
