@@ -5,13 +5,13 @@
 1. 合理使用 PureComponent,React.Memo 进行性能优化
 2. 列表渲染加 key
 3. 长列表优化
-3. 自定义事件，Dom 事件及时销毁
-4. 合理使用异步组件， React.lazy()和<suspense>
-5. 减少函数 bind this 的次数
-6. 合理使用 immutable.js或immer
-7. 前端通用的性能优化(图片懒加载等)
-8. webpack 层面的优化
-9. 使用 SSR
+4. 自定义事件，Dom 事件及时销毁
+5. 合理使用异步组件， React.lazy()和<suspense>
+6. 减少函数 bind this 的次数
+7. 合理使用 immutable.js 或 immer
+8. 前端通用的性能优化(图片懒加载等)
+9. webpack 层面的优化
+10. 使用 SSR
 
 # shouldComponentUpdate
 
@@ -20,7 +20,7 @@
 通过前后的 props 对比，来判断是否更新 render
 必须配合“不可变值”一起使用
 
-```
+```jsx
 //自己写判断的方法
 //接收新传进来的poprs和state
 shouldComponentUpdate(nextProps,nextState){
@@ -37,42 +37,36 @@ shouldComponentUpdate(nextProps,nextState){
 PureComponent（纯组件），在 shouldComponentUpdate 中实现了浅比较，必须依靠 class 组件才能使用。
 只需要 extends React.PureComponent 就能使组件成为 Pure Component。
 
-```
-import React from 'react';
+```jsx
+import React from 'react'
 
 class TestC extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            count: 0
-        }
+  constructor(props) {
+    super(props)
+    this.state = {
+      count: 0,
     }
-    render() {
-        return (
-            <div>
-            { this.state.count }
-            <button onClick = {
-                () => this.setState({ count: 1 })
-            }> Click Me </button>
-            </div >
-        );
-    }
+  }
+  render() {
+    return (
+      <div>
+        {this.state.count}
+        <button onClick={() => this.setState({ count: 1 })}> Click Me </button>
+      </div>
+    )
+  }
 }
 
-export default TestC;
+export default TestC
 ```
 
 React.Memo()，函数组件中的 PureComponent，是一个高阶组件，使用它来包裹一个已有的函数组件。
 因为函数组件中没有生命周期和 state,也不能去继承 React.PureComponent 类。
 浅比较，已经适用于大部分组件，不建议用深比较，比较耗费性能、
 
-```
-const Funcomponent = ()=> {
-    return (
-        <div>
-            Hiya! component
-        </div>
-    )
+```jsx
+const Funcomponent = () => {
+  return <div>Hiya! component</div>
 }
 const MemodFuncComponent = React.memo(FunComponent)
 ```
