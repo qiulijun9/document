@@ -9,7 +9,7 @@ render()
 组件渲染
 
 componentDidMount()
-组件被渲染到页面后触发，此时页面有了真正的 dom，可以进行 dom 相关操作，一般会把 ajax 放在这个里面
+组件被渲染到页面后触发，此时`页面有了真正的 dom，可以进行 dom 相关操作，一般会把 ajax 放在这个里面
 
 # 更新时
 
@@ -17,10 +17,10 @@ shouldComponentUpdate()
 组件更新前，会被自动执行
 
 componentWillUpdate()
-组件即将被更新时触发，不能调用 setSate()，在shouldComponentUpdate之后执行，如果shouldComponentUpdate 返回true，则会执行，否则不会执行。
+组件即将被更新时触发，不能调用 setSate()，在 shouldComponentUpdate 之后执行，如果 shouldComponentUpdate 返回 true，则会执行，否则不会执行。
 
 render()
-对比新旧dom阶段，修改真实的dom
+对比新旧 dom 阶段，修改真实的 dom
 
 componentDidUpdate()
 组件更新后立即执行

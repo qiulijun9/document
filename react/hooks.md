@@ -51,18 +51,27 @@ useEffect 中的 return 方法是在组件销毁的时候执行一些清除操�
 ## useEffect()模拟生命周期
 
 模拟 componentDidMount
-useEffect(()=>{
 
-},[])
+```jsx
+useEffect(() => {
+  consle.log('didmount')
+}, [])
+```
 
 模拟 componentDidUpdate
-const [flag,setFlag] = useState(true);
-useEffect(()=>{
-if(!flag){
 
-}
-setFlag(false)
-},[flag])
+```jsx
+const [flag, setFlag] = useState(true)
+useEffect(() => {
+  if (!flag) {
+    console.log('执行 update')
+  }
+  setFlag(false)
+  return () => {
+    console.log('销毁触发')
+  }
+}, [flag])
+```
 
 模拟 componentWillUnmount
 useEffect(()=>{
@@ -81,19 +90,19 @@ const countContext = createContext() //创建上下文
 之前使用通过 context 的 consumer 组件来使用
 
 ```jsx
-const UserContext = createContext();
+const UserContext = createContext()
 class UseUserInfoComponent extends Component {
-	render() {
-		return (
-			<UserContext.Consumer>
-				{context => (
-					<div>
-						<p>{context.name}</p>
-					</div>
-				)}
-			</UserContext.Consumer>
-		);
-	}
+  render() {
+    return (
+      <UserContext.Consumer>
+        {context => (
+          <div>
+            <p>{context.name}</p>
+          </div>
+        )}
+      </UserContext.Consumer>
+    )
+  }
 }
 ```
 
@@ -146,7 +155,16 @@ inputEl.current.value="hello"
 
 # useSelector 获取 redux 中的值
 
+```jsx
+import { useSelector, useDispatch } from 'react-redux'
 const counter = useSelector(state => state.counter)
+
+const dispatch = useDispatch()
+const incrementCounter = useCallback(
+  () => dispatch({ type: 'increment-counter' }),
+  [dispatch],
+)
+```
 
 # useDispatch()修改 redux 的值
 
