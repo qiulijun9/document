@@ -22,3 +22,8 @@ git mv 源文件名 新文件名
 查看简短的日志 git log --oneline
 查看前几条次数 git log -2
 查阅其他 log 命令 git help --web log
+
+# 更新本地库
+
+git fetch 拉取远程分支
+git pull = fetch + merge
