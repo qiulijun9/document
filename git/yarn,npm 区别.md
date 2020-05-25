@@ -1,0 +1,24 @@
+yarn 和 npm 都是利用 packagae.json 来拉取依赖。但 package.json 的版本号不明确，是在一个范围，所以一在安装时版本可能不一。yarn.lock 用来记录版本，保证版本统一。
+
+## npm 缺点
+
+1.  npm 安装时间久
+2.  npm 不同机器下载时版本可能不同
+
+# yarn 优点
+
+1. 并行安装， 安装速度快
+2. 离线安装，如果安装过，就从缓存中获取，不用从网络中下载了
+3. 安装版本统一，通过 yarn.lock 文件，记录了安装模块的版本号，保证每个人下载的版本相同 ß
+4. 更简洁的输出，只会打印出关键的信息，不会打印所有安装的依赖的信息，更清晰
+
+## yarn 和 npm 对比
+
+| npm                         |         yarn          |
+| :-------------------------- | :-------------------: |
+| npm install                 |         yarn          |
+| npm install react --save    |    yarn add react     |
+| npm uninstall react --save  |   yarn remove react   |
+| npm install ract --save-dev |  yarn add react--dev  |
+| npm update --save           |     yarn upgrade      |
+| npm install react -g        | yarn global add react |
