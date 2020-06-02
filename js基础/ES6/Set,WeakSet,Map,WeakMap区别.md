@@ -40,3 +40,23 @@ return Array.from(new Set(array))
 3.操作方法：get(),set(), has() delete()
 
 4.键名可以被垃圾回收
+
+deepclone 时用到了 map
+
+```js
+function deepClone(source, map = new Map()) {
+	if (map.get(source)) return source;
+	if (isObject(source)) {
+		map.set(source, true);
+		let cloneTarget = Array.isArray(source) ? [] : {};
+		for (let i in source) {
+			if (source.hasOwnProperty(i)) {
+				cloneTarget[i] = deepClone(source[i]);
+			}
+		}
+		return cloneTarget;
+	} else {
+		return source;
+	}
+}
+```
