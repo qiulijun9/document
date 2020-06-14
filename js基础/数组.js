@@ -214,3 +214,5 @@ console.log(add(a, b));
 let arrn = [2, 3, 5, 6, 7];
 let strn = arrn.join('');
 //  console.log(parseInt(strn));
+
+//类数组转数组  Array.prototype.slice.apply(类数组) 把类数组当做参数传入数组

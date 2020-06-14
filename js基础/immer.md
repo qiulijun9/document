@@ -16,51 +16,63 @@ new Proxy 第一个参数是目标对象，第二个参数是一个对象，对�
 ```js
 import produce from 'immer';
 
-let obj ={
-    name :"xi",
-    a:{
-        age:2
-    }
-  }
-let obj2 = produce(obj, draft =>{
-  draft.a.age =90;
-})
+let obj = {
+	name: 'xi',
+	a: {
+		age: 2,
+	},
+};
+let obj2 = produce(obj, draft => {
+	draft.a.age = 90;
+});
 
 let currentState = {
-    a: [],
-    p: {
-      x: 1
-    }
-}
+	a: [],
+	p: {
+		x: 1,
+	},
+};
 //第二种使用
-let producer = produce((draft)=>{
-  draft.p.x = 4;
-})
+let producer = produce(draft => {
+	draft.p.x = 4;
+});
 
-let obj3= producer(currentState);
+let obj3 = producer(currentState);
 
 //react 中使用
 let person = {
-  members: [
-   {
-     name: 'ronffy',
-      age: 30
-   }
-  ]
-}
-const [personState,setPersonState] = useState(person);
-setPersonState(produce(person,draft =>{
-      draft.members[0].age =50;
- }));
+	members: [
+		{
+			name: 'ronffy',
+			age: 30,
+		},
+	],
+};
+const [personState, setPersonState] = useState(person);
+setPersonState(
+	produce(person, draft => {
+		draft.members[0].age = 50;
+	})
+);
 
 //reducer
-const reducer = (state, action) => produce(state, draft => {
-  switch (action.type) {
-    case 'ADD_AGE':
-      draft.members[0].age++;
-  }
-})
+const reducer = (state, action) =>
+	produce(state, draft => {
+		switch (action.type) {
+			case 'ADD_AGE':
+				draft.members[0].age++;
+		}
+	});
 ```
 
-
 先生成 state 的代理 draftState，再通过 get,set 方法浅拷贝修改链上的值,作为新的 immutable 对象返回
+
+function bar() {
+Promise.resolve().then(bar)
+}
+
+function foo() {
+setTimeout(foo, 0)
+}
+
+哪一个会阻塞 ui 进程
