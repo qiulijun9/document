@@ -22,3 +22,13 @@ yarn 和 npm 都是利用 packagae.json 来拉取依赖。但 package.json 的�
 | npm install ract --save-dev |  yarn add react--dev  |
 | npm update --save           |     yarn upgrade      |
 | npm install react -g        | yarn global add react |
+
+yarn global bin
+echo \$PATH 显示环境变量(变量名为 PATh)的
+
+yarn 全局安装找不到,解决方案
+将 yarn global bin 的路径,添加到全局配置中
+
+```js
+export PATH="$PATH:`yarn global bin`:$HOME/.config/yarn/global/node_modules/.bin"
+```
