@@ -63,6 +63,12 @@ git rebase -i commithash(要合并的 commit 之前的 )
 |
 添加 commit 信息，保存退出
 
+## 本地 commit 之后,未提交到远程,要取消时本次 commit 并保存更改时
+
+git reset --mixed HEAD^ 或者 HEAD~1 会撤销到 git add. 之前
+git reset --soft HEAD^ 或者 HEAD~1 会撤销到 git add. 之时
+git reset commithash (上一个 commit 的 hash) 会撤销到 git add. 之前
+
 # 更新本地库,拉取远端的代码
 
 git fetch 拉取远端的代码和远端的代码还没有关联
