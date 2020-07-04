@@ -36,3 +36,9 @@ element.removeChild(node)
 4. 数组去重
 
 new Set([...document.querySelectorAll('*')].map(e=>e.tagName)).size
+
+# 注意
+
+操作对象或者获取对象的 length 都比数组慢，在获取对象的某个值，或者获取对象的长度时都需要将对象遍历一遍，才可得到。一般会把对象的 length 存到一个变量中再使用。
+
+当要多次访问一个 dom 属性或方法时，应把该成员用阿变量缓存起来，把 length 也用一个变量存储。
