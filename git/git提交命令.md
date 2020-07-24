@@ -5,6 +5,14 @@
 添加到暂存区 git add 文件名/ git add .(文件的修改和新建添加到暂存区) /git add -u(将文件的修改和删除添加到暂存区) git add -A(将文件的修改,删除,新建添加到暂存区)
 添加 commit 把暂存区的集合添加到 git 的历史版本中: git commit -m 'commit 信息'
 
+# 添加到暂存区
+
+git add 文件名
+
+git add 多个文件名或文件夹名
+git add -u 把 git 管理的文件一次加入暂存区
+git add . 把所有的文件都添加到暂存区
+
 # 文件重命名
 
 1. 重命名文件
