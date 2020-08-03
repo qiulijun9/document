@@ -1,0 +1,31 @@
+# 任务名,会根据分层级
+job1:
+  # runner 执行的shell 脚本,唯一且必须存在
+  script:
+    - yarn run build:alpha
+  # 指定任务用到的镜像,也可以定义在全局,其他可以定义在全局的(image，services，cache，before_script，after_script)
+  image: registry.hellorf.com/ci_cd/node_10
+  # 定义任务的阶段,如果名字相同,则并行执行.不同则等待上个执行完再执行
+  stage: test
+  # 执行任务之前的进行的一些操作.必须是一个数组. yml 定义数组 -
+  before_script:
+    - before todo
+  after_script:
+    - after todo
+  # 定义运行的分支或标签
+  only:
+    - alpha
+  # 定义不运行的分支或标签
+  except:
+    - master
+
+# 指定缓存的文件或文件夹,目的是为了加快执行速度
+cache:
+  paths:
+    - node_modules/
+
+job2:
+  image: ''
+  stage: test
+  only:
+    - testing
