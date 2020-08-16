@@ -8,8 +8,7 @@
 # 添加到暂存区
 
 git add 文件名
-
-git add 多个文件名或文件夹名
+git add 后面可以加单个或多个文件名，或文件夹
 git add -u 把 git 管理的文件一次加入暂存区
 git add . 把所有的文件都添加到暂存区
 
@@ -28,10 +27,33 @@ git mv 源文件名 新文件名
 查看所有分支的日志 git log --all/ git log -all --graph (图形化)
 查看自己所有的日志 git log
 查看简短的日志 git log --oneline
-查看前几条次数 git log -2
+查看最近的几个 commit git log -n4
 查阅其他 log 命令 git help --web log
+显示文件改动 git log - p 文件名
+以图表的方式查看日志 git log -graph
+查看工作树和缓存区的区别 git diff
+最新的提交差别 git diff HEAD
+查看图形化的日志 git log --graph
+打开图形化界面 gitk
+查看 hash 类型 git cat-file -t 哈希
+查看 hash 内容 git cat-file -f 哈希
+
+# 分离头指针
+
+当前的 commit 没有和分支挂钩，就为分离头指针
+如在分离头指针上开发，在切到其他分支时，这些 commit 可能会丢失，被 git 当做垃圾回收掉
+要在切换分支的时候新建分支把这次 commit
+按照提示信息，保存下来 git branch 新分支名 commit hash
 
 # 更新 commit message
+
+## 多行的 commit 信息
+
+提交时输入多行信息
+git commit
+第一行 大概描述
+空行
+第三行以后 详细描述
 
 ## 更新最近的一次 commit message
 
@@ -40,6 +62,12 @@ git commit --amend
 如果出现如下错误 int: Waiting for your editor to close the file... error: There was a problem with the editor 'vi'.
 可以运行
 git config --global core.editor 'vim'
+
+## 修改之前的 commit 的 message
+
+采用变基的操作，基是基于被变的 commit 的父亲的 hash
+交互式的命令
+reword 只修改某个 message，弹出修改 message 的窗口，修改 message
 
 ## 更新旧的 commit 历史树上的任何一个 commit
 
@@ -53,10 +81,10 @@ r 你要修改的那条记录
 
 ## 把连续的 commit 整理成一个
 
-git rebase -i commithash(要合并的 commit 之前的 )
+git rebase -i commithash(要合并的 commit 之前的,父亲的 hash )
 |
 |
-s 所有要合并的 commit
+s 所有要合并的 commit,选择一个 pick 的 commit
 |
 |
 添加 commit 信息，保存退出
@@ -76,6 +104,8 @@ git rebase -i commithash(要合并的 commit 之前的 )
 git reset --mixed HEAD^ 或者 HEAD~1 会撤销到 git add. 之前
 git reset --soft HEAD^ 或者 HEAD~1 会撤销到 git add. 之时
 git reset commithash (上一个 commit 的 hash) 会撤销到 git add. 之前
+回到某个版本
+git reset --hard 哈希值
 
 # 更新本地库,拉取远端的代码
 
@@ -110,3 +140,38 @@ git push origin 分支名
 
 git log -p
 输入自己要找的内容
+
+# 重命名文件
+
+git mv 源文件名 新文件名
+
+# 正确删除文件
+
+git rm 文件名
+
+# 临时保存
+
+git stash
+git stash pop stash 的 list 记录不保存
+git stash apply stash 的 list 记录保存
+
+# 对比差异
+
+对比暂存区和 head 差异
+git diff --cached
+对比工作区和暂存区的区别
+git diff
+git diff 文件名
+
+## 对比不同 commit 的差异
+
+git diff commithash1 commithash2 文件名
+
+## 让暂存区内容都恢复到 head
+
+git reset HEAD
+也可指定规定文件名
+
+## 让工作区的内容变更为和暂存区相同
+
+git checkout 文件名
