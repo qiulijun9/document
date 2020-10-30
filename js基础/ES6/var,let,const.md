@@ -61,51 +61,51 @@ for(let i = 0; i < 3; i++ ){
 },1000)
 }
 输出 0 1 2
-执行过程  let i ------i = 0 ------ i < 3----执行代码 i++
+执行过程  let i ------i = 0 ------ i < 3----执行代码(console.log(i)) i++
 ```
 
 利用闭包
 
 ```js
 for (var i = 0; i < 3; i++) {
-	(function (j) {
-		setTimeout(() => {
-			console.log(j);
-		}, 1000);
-	})(i);
+  ;(function (j) {
+    setTimeout(() => {
+      console.log(j)
+    }, 1000)
+  })(i)
 }
 ```
 
 ```js
 function foo() {
-	let a = 3;
-	return function () {
-		console.log(a); //可以获取闭包中的a
-	};
+  let a = 3
+  return function () {
+    console.log(a) //可以获取闭包中的a
+  }
 }
-let a = 2;
-let bar = foo();
-bar();
+let a = 2
+let bar = foo()
+bar()
 ```
 
 ```js
 function foo() {
-	let a = 3;
-	return function () {
-		console.log(this.a); // this 指向window,为window下的a,由于是var 定义的变量，a =2
-	};
+  let a = 3
+  return function () {
+    console.log(this.a) // this 指向window,为window下的a,由于是var 定义的变量，a =2
+  }
 }
-var a = 2;
-let bar = foo();
-bar();
+var a = 2
+let bar = foo()
+bar()
 
 function foo() {
-	let a = 3;
-	return function () {
-		console.log(this.a); //this 指向window,由于是let 定义的a ,只在块级作用域内有效，所以为undefined
-	};
+  let a = 3
+  return function () {
+    console.log(this.a) //this 指向window,由于是let 定义的a ,只在块级作用域内有效，所以为undefined
+  }
 }
-let a = 2;
-let bar = foo();
-bar();
+let a = 2
+let bar = foo()
+bar()
 ```
