@@ -15,25 +15,65 @@ http://www.ziyi2.cn/2017/08/02/%E6%B8%85%E9%99%A4%E5%92%8C%E5%8E%BB%E9%99%A4%E6%
 当遇到行内级盒或者文字：首先尝试排入行内级格式化上下文，如果排不下，那么创建一个行盒，先将行盒排版（行盒是块级，所以到第一种情况），行盒会创建一个行内级格式化上下文。
 遇到 float 盒：把盒的顶部跟当前行内级上下文上边缘对齐，然后根据 float 的方向把盒的对应边缘对到块级格式化上下文的边缘，之后重排当前行盒。
 
-## 什么是 BFC：
+### 正常流的排版
+
+1. 收集盒和文字进行
+2. 计算盒和文字在行中的排布
+3. 计算行间的排布
+
+### float 元素
+
+1. 会先把元素当成正常元素排进文档流，在按照 float 的方向向该方向挤一下
+2. float 元素能浮动到的位置会受之前浮动元素的影响
+3. clear 清除浮动，找出干净的空间来做浮动
+
+### Block Contaniner:能容纳正常流的盒，里面就有 BFC
+
+1. dispaly:block
+2. display:inline-block
+3. display:table-cell
+4. flex item ：flex 的子元素
+5. grid cell
+6. table-caption
+
+### Block-lever-box:外面有 BFC 的(包括 inline-block)
+
+1. dispaly:block
+2. display:flex
+3. display:table
+4. display:grid
+
+### Block Box = Block Contaniner+Block-lever-box
+
+里外都有 BFC
+
+## BFC 合并
+
+block-box && overflow :visible
+
+1. float
+2. 边距折叠
+
+## 什么是 BFC： BFC(Block Formating Context) 块级格式化上下文
 
 BFC:块级格式化上下文，它决定了元素如何对其内容进行定位，以及与其他元素间的关系
 是一个独立的容器，容器内部的布局和外部毫不相干,浮动元素,绝对定位元素,非块级容器及 overflow 不为 visible 的块级盒子,都会为他们的内容创建 BFC.
 
-## BFC 触发的条件：
+## 设立 BFC：
 
 1. 根元素，父元素与正常文件流的子元素（非浮动子元素）自动形成一个 BFC
 2. 浮动元素（元素的 float 不是 none）
 3. 绝对定位元素 (元素 position 为 absolute 或 fixed)
-4. 内联元素（元素 display：inline-block）
-5. 表格单元格（元素 display：table-cell）
-6. 表格标题（元素 display：table-caption）
-7. 具有 overflow 且不是 visible 的块元素
-8. flex 或 inline-flex
-9. display:flow-root
-10. column-span:all
+4. 符合 Block Contaniner 的元素
+   -. 内联元素（元素 display：inline-block）
+   -. 表格单元格（元素 display：table-cell）
+   -. 表格标题（元素 display：table-caption）
+5. 具有 overflow 且不是 visible 的块元素
+6. flex item flex 的子元素 或 inline-flex
+7. display:flow-root
+8. column-span:all
 
-## 简单满足 BFC 条件
+## 简单满足 BFC 条件 和设立 BFC 是一个意思
 
 1. 浮动元素
 2. 绝对定位元素
@@ -85,7 +125,7 @@ float: left;
     <div className="child"></div>
     <div className="child"></div>
  </div>
-3. 垂直 margin 问题,在一个 BFC 中，指两个或多个盒子在垂直方向上（兄弟元素或是父子元素），会发生 margin 重叠，且是以最大的外边距为准。
+3. 垂直 margin 折叠问题,在一个 BFC 中，指两个或多个盒子在垂直方向上（兄弟元素或是父子元素），会发生 margin 重叠，且是以最大的外边距为准。且只发生在 BFC 中
 例如：下面的两个 P 标签的 margin 为 100，应该为 200，所以在外面包裹一层设置 BFC
 .p-container p{
 color: #f55;
