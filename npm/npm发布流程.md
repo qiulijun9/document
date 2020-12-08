@@ -37,3 +37,16 @@ npm init
 # 创建一个案例,引用刚上传的包
 
 新建一个项目,引入刚发布的包,测试使用
+
+# lerna
+
+https://lernajs.bootcss.com/
+
+lerna 是一个工具，优化了 git 和 npm 多包管理的工作流
+每一个文件下都是一个独立的 npm 包。需要 lerna.json 和 packages 文件夹管理各个包
+
+Lerna 中的两个主要命令是 lerna bootstrap 和 lerna publish。
+
+bootstrap 会将仓库中的依赖项链接在一起。 publish 将有助于发布任何更新的软件包。
+
+通过配置 lerna.json ,来确定发布时包的版本是固定模式还是独立模式
