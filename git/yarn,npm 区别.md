@@ -32,3 +32,17 @@ yarn 全局安装找不到,解决方案
 ```js
 export PATH="$PATH:`yarn global bin`:$HOME/.config/yarn/global/node_modules/.bin"
 ```
+
+## yarn / npm install 原理
+
+1. 将包的版本区间解析为某个具体的版本号
+2. 下载该版本号对应的 tar 包到本地离线镜像
+3. 把依赖从本地离线镜像解压到本地缓存
+4. 把解压后的文件拷贝到 node_modules 下
+5. 生成.lock 文件
+
+## 缺点：
+
+1. 依赖的结构是树型的，依赖层级过多导致，文件路径过长
+2. 会下载重复的包，文件体积过大
+3. 模块实例不能共享

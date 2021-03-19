@@ -10,7 +10,7 @@ locaStorage 和 sessionStorage 相同点：
 不同点：
 
 1. locaStorage 存储在本地，除非手动清除，否则一直在
-   sessionStorage: 仅在当前回话下有效，关闭页面或浏览器后就会清除
+   sessionStorage: 会话级别，仅在当前回话下有效，关闭页面或浏览器后就会清除
 2. locaStorage：在同一个浏览器内，同源文档之间共享 localStorage 数据，可以互相读取、覆盖、清除(同浏览器限制、同源限制)
 
 sessionStorage 的作用域还被限定在了窗口中，也就是说，只有同一浏览器、同一窗口的同源文档才能共享数据(同浏览器限制、同源限制、同标签页限制)
@@ -21,4 +21,5 @@ getItem(key)
 removeItem(key)
 clear()
 
-
+IndexedDB：
+是运行在浏览器中的非关系型数据库,
