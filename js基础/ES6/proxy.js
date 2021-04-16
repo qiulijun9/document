@@ -32,25 +32,32 @@ function Archiver() {
   }
 }
 
+/**
+ * vue2.0 中的双向绑定使用的是Object.defineProperty
+ * 缺点：
+ * 需要克隆一份原始对象
+ * 需要给每个对象的属性设置监听
+ *
+ * vue3.0 使用的是Proxy
+ * 监听对象,
+ */
+
 let arc = new Archiver()
 arc.num = 11
 arc.num = 12
 console.log(arc.getArchiver())
 
 //Proxy代理
-let proxy = new Proxy(
-  {},
-  {
-    get: function (obj, prop) {
-      console.log('get')
-      return obj[prop]
-    },
-    set: function (obj, prop, value) {
-      console.log('set')
-      obj[prop] = value
-    },
+let proxy = new Proxy(obj, {
+  get: function (target, prop) {
+    console.log('get')
+    return target[prop]
   },
-)
+  set: function (target, prop, value) {
+    console.log('set')
+    target[prop] = value
+  },
+})
 proxy.name = 'ss'
 console.log(proxy.name)
 
@@ -70,3 +77,52 @@ console.log(proxy.name)
   }
   this.watch = watch
 })()
+
+const promise1 = new Promise((resolve, reject) => {
+  console.log('promise1')
+})
+console.log('1', promise1)
+
+new Promise((resolve, reject) => {
+  reject('error')
+})
+  .then(
+    res => {
+      console.log(res)
+    },
+    err => {
+      console.log('err::', err)
+    },
+  )
+  .then(err => {
+    console.log(11, err)
+  })
+  .catch(err => {
+    console.log(22, err)
+  })
+
+Promise.resolve()
+  .then(() => {
+    console.log(0)
+    return Promise.resolve(4)
+  })
+  .then(res => {
+    console.log(res)
+  })
+
+Promise.resolve()
+  .then(() => {
+    console.log(1)
+  })
+  .then(() => {
+    console.log(2)
+  })
+  .then(() => {
+    console.log(3)
+  })
+  .then(() => {
+    console.log(5)
+  })
+  .then(() => {
+    console.log(6)
+  })
