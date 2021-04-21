@@ -42,6 +42,32 @@ MyPromise.prototype.then = function (onFufilled, onRejected) {
 MyPromise.prototype.catch = function (onRejected) {
   return this.then(null, onRejected)
 }
+
+// 简易版的 Promise
+
+function Bromise(executor) {
+  var onResolve_ = null
+  var onReject_ = null
+  this.then = function (onResolve, onReject) {
+    onResolve_ = onResolve
+    onReject_ = onReject
+  }
+  // 延迟绑定回调函数
+  function resolve(value) {
+    setTimeout(() => {
+      onResolve_(value)
+    }, 0)
+  }
+  // 延迟绑定回调函数
+  function reject(err) {
+    setTimeout(() => {
+      onReject_(err)
+    }, 0)
+  }
+
+  executor(resolve, reject)
+}
+
 /**
  * promise.all 返回一个Promise 实例,接收一个Promise 数组
  * 1.如果有一个Promise 失败错误,则回调reject
@@ -173,6 +199,7 @@ function Promise(excutor) {
   //执行用户传入的函数
   excutor(resolve.bind(self))
 }
+
 Promise.prototype.then = function (onResolved) {
   var self = this
   //返回新的Promise
