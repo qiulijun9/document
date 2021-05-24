@@ -18,7 +18,7 @@ main 模块（全局模块），events 模块，http 模块
 
 1. main 模块
 
-位于配置文件的根部，提供进程，安全管理等能力
+位于配置文件的根部，提供进程管理和安全等能力
 
 2. events 模块（影响 nginx 与用户网络的连接）
 
@@ -37,6 +37,12 @@ events {
 
 3. http 模块 分为全局块和服务块
    全局块包括文件引入（includes ），日志定义，连接超时， 请求上限等
+
+   其中包含 server 指令，该指令是定义指定的站点，只能被包含在 http 区段中
+
+4. include 指令
+   用来引入子文件配置，在配置文件的任何地方都能引入
+   eg : include sites/\*.conf;
 
 ## 配置虚拟主机：
 
@@ -129,5 +135,23 @@ server{
 http {
     gzip  on; # 是否启用gzip 压缩
     gzip_types  text/plain application/javascript text/css; # 配置压缩的类型
+}
+```
+
+# 负载均衡
+
+设置权重之后，则该主机的访问次数会增多
+
+```
+http{
+   upstream network1{
+    server 127.0.0.1:3000 weight=3; #权重
+    server 127.0.0.1:5000 weight=1;
+   }
+
+   localtion /webname{
+    proxy_pass http://network1;
+  }
+
 }
 ```
