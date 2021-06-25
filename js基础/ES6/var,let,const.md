@@ -147,3 +147,37 @@ let a = 2
 let bar = foo()
 bar()
 ```
+
+## 如何 让 const a = { name:"a"} a.name="b" 定义的对象不能修改
+
+```js
+const a = { name: 'a', b: { age: 1 }, c: [1, 2, 3, 4] }
+1. Object.freeze(a)
+// 弊端： 只能实现浅冻结 ,如果对象的属性是对象或者是数组的话则还是能改变
+// 利用递归做深层冻结
+const deepFreeze = obj => {
+  Object.values(obj).forEach(value => {
+    if (typeof value === 'object') {
+      console.log(typeof value)
+      deepFreeze(value)
+    }
+  })
+  return Object.freeze(obj)
+}
+
+deepFreeze(a)
+
+
+2. Object.defineProperty(a, 'name', { value: 'a', writable: false })
+
+const deepObjectDefineProperty = object => {
+  Object.entries(object).forEach(([key, value]) => {
+    Object.defineProperty(object, key, { value: value, writable: false })
+  })
+}
+deepObjectDefineProperty(a)
+
+3. Object.preventExtensions(a)  // 禁止向对象添加新的属性和方法
+4. Object.seal(a) // 禁止向对象添加新的属性和方法,同时禁止删除已存在的属性的属性和方法
+
+```
