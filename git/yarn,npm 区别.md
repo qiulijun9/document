@@ -46,3 +46,11 @@ export PATH="$PATH:`yarn global bin`:$HOME/.config/yarn/global/node_modules/.bin
 1. 依赖的结构是树型的，依赖层级过多导致，文件路径过长
 2. 会下载重复的包，文件体积过大
 3. 模块实例不能共享
+
+# package.json
+
+package.json 中版本符号
+
+^: 代表主版本固定的情况下，已经升级到最新版 如： react:^16.8.0 可以升级到 react:^ 16.9.1 ...等
+~:代表在副版本不变的情况下，可以升级到已上班本 如： react:^16.8.0 可以升级到 react:^16.8.1 ,16.8.5 等
+无符号：代表版本必须固定

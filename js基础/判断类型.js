@@ -49,7 +49,7 @@ const str1 = new String()
 console.log(str1 instanceof String) //true
 console.log(new String('aa') instanceof String) // true 存在装箱转换，所以 new String('aa') instanceof String 为true
 console.log(String('aa') instanceof String) //false   String() 方法会默认调用toString 方法，转成string 类型
-console.log({} instanceof Object) //true
+console.log('instanceof', {} instanceof Object) //true
 console.log({} instanceof Object) //true
 console.log([] instanceof Array) //true
 
@@ -80,8 +80,9 @@ console.log(Object.is(NaN, NaN))
  *
  */
 let arra = [34, 4, 6, 7]
-console.log(33, arra instanceof Array)
+console.log('判断数组', arra instanceof Array)
 console.log(Object.prototype.toString.call(arra) === '[object Array]')
+console.log("'判断数组2'", arra.__proto__ === Array.prototype)
 console.log(33, Array.isArray(arra)) //Array.isArray()也是用Object.prototype.toString.call 来实现的
 //instanceof 能否判断基本类型？？？？  能，需通过symbol.hasInstance方法重写instanceof 方法
 class yanzhengNumber {
@@ -130,3 +131,83 @@ console.log(Object.prototype.toString.call(error)) //"[object Error]"
 console.log(Object.prototype.toString.call(/a/g)) //"[object RegExp]"
 console.log(Object.prototype.toString.call(Math)) // [object Math]
 console.log(Object.prototype.toString.call(JSON)) // [object JSON]
+
+// function foo() {
+//   console.log(123)
+// }
+// foo()
+// function foo() {
+//   console.log(234)
+// }
+// foo()
+
+// foo()
+
+// function foo() {
+//   console.log(123)
+// }
+
+// var foo = 456
+
+// showName()
+// var showName = function () {
+//   console.log(2)
+// }
+// function showName() {
+//   console.log(1)
+// }
+
+// foo2() // 123  忽略 var foo2 的声明
+// function foo2() {
+//   console.log(123)
+// }
+
+// var foo2 = 456
+// console.log(foo2)
+// function f() {
+//   var a = 2
+//   console.log(a)
+
+//   {
+//     let a = 3
+//     console.log(a)
+//   }
+// }
+
+// f()
+
+let foo = () => bar
+let bar = 'bar'
+console.log(foo())
+
+var myname = '极客时间'
+function showName() {
+  console.log(myname)
+  if (1) {
+    var myname = '极客邦'
+    console.log(1)
+  }
+  console.log(myname)
+}
+showName()
+
+function myInstanceOf(left, right) {
+  // 基本类型
+  if (typeof left !== 'object' || left === null) {
+    return false
+  }
+  let O = left.__proto__
+
+  while (true) {
+    if (O === null) {
+      return false
+    }
+
+    if (O === right.prototype) {
+      return true
+    }
+    O = O.__proto__
+  }
+}
+
+console.log(myInstanceOf({ a: '1' }, Object))

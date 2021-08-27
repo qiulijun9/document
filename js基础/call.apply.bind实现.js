@@ -1,5 +1,6 @@
 /**
  * 模拟实现call 
+ * call() 方法是使用一个指定的this和若干个参数的前提下调用某个函数或是方法
  * 思路：
     1. 将函数设为该对象的属性
     2. 执行该函数
@@ -135,3 +136,11 @@ Function.prototype.bind = function (obj, arg) {
     return context.apply(obj, arg)
   }
 }
+
+const a = { name: 'a' }
+
+Object.defineProperty(a, 'name', { value: 'a', writable: false })
+
+a.name = 'b'
+
+console.log(a)

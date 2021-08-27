@@ -1,0 +1,127 @@
+.common-image: &commonImage
+  image: registry.hellorf.com/ci_cd/node_12
+
+.common-config: &commonConfig
+  before_script:
+    - eval $(ssh-agent -s)
+    - echo "$DEV_SSH_PRIVATE_KEY" > ~/deploy.key
+    - chmod 0600 ~/deploy.key
+    - ssh-add ~/deploy.key
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - yarn install --frozen-lockfile
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - .next/cache/
+
+stages:
+  #  - lint_test
+  - deploy
+  - publish
+
+# lint:
+#   stage: lint_test
+#   image: registry.hellorf.com/ci_cd/node_12
+
+#   before_script:
+#     - yarn install --frozen-lockfile
+#   script:
+#     - yarn run lint
+
+#   allow_failure: true
+
+# test:
+#   stage: lint_test
+#   script:
+#     - echo 'fake test'
+
+deploy_alpha:
+  stage: deploy
+  <<: *commonImage
+  <<: *commonConfig
+
+  script:
+    - yarn run build:alpha
+    - rsync -atvhze ssh .next/static $DEV_DEPLOY_SSH_ALPHA:$DEV_DEPLOY_STATIC_PATH --stats --exclude-from 'exclude-git.txt' -i --delete
+    # - rsync -atvhze ssh .next/static root@172.16.4.24:/data/www/new_hellorf --stats --exclude-from 'exclude-git.txt' -i --delete   将build 完的文件夹拷贝到服务器目录下边，不包含 exclude-git.txt 文件 -i输出传输的路径 --delete 删除文件夹下已存在的文件
+    - yarn install --frozen-lockfile --production
+    - rsync -atvhze ssh $PWD/ $DEV_DEPLOY_SSH_ALPHA:$DEV_DEPLOY_PROJECT_PATH --exclude-from 'exclude-git.txt' --stats --delete
+      # - rsync -atvhze ssh $PWD  root@172.16.4.24:/data/www/new_hellorf --exclude-from  'exclude-git.txt' --stats --delete
+    - ssh $DEV_DEPLOY_SSH_ALPHA "cd $DEV_DEPLOY_PROJECT_PATH && yarn start:alpha"
+    # - ssh root@172.16.4.24  cd  /data/www/new_hellorf  && yarn start:alpha
+  only:
+    - alpha
+
+deploy_beta:
+  stage: deploy
+  <<: *commonImage
+  <<: *commonConfig
+
+  script:
+    - yarn run build:beta
+    - rsync -atvhze ssh .next/static $DEV_DEPLOY_SSH_BETA:$DEV_DEPLOY_STATIC_PATH --stats --exclude-from 'exclude-git.txt' -i --delete
+    - yarn install --frozen-lockfile --production
+    - rsync -atvhze ssh $PWD/ $DEV_DEPLOY_SSH_BETA:$DEV_DEPLOY_PROJECT_PATH --exclude-from 'exclude-git.txt' --stats --delete
+    - ssh $DEV_DEPLOY_SSH_BETA "cd $DEV_DEPLOY_PROJECT_PATH && yarn start:beta"
+  only:
+    - beta
+
+deploy_seven:
+  stage: deploy
+  <<: *commonImage
+  <<: *commonConfig
+
+  script:
+    - yarn run build:seven
+    - rsync -atvhze ssh .next/static $DEV_DEPLOY_SSH_SEVEN:$DEV_DEPLOY_STATIC_PATH --stats --exclude-from 'exclude-git.txt' -i --delete
+    - yarn install --frozen-lockfile --production
+    - rsync -atvhze ssh $PWD/ $DEV_DEPLOY_SSH_SEVEN:$DEV_DEPLOY_PROJECT_PATH --exclude-from 'exclude-git.txt' --stats --delete
+    - ssh $DEV_DEPLOY_SSH_SEVEN "cd $DEV_DEPLOY_PROJECT_PATH && yarn start:seven"
+  only:
+    - seven
+
+deploy_production:
+  stage: deploy
+  image: registry.hellorf.com/ci_cd/dind
+
+  variables:
+    IMAGE_NAME: $CI_REGISTRY/hf-fe/hellorf
+
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+  script:
+    - IMAGE_TAG=$IMAGE_NAME:${CI_COMMIT_TAG}
+    - docker build
+      --build-arg PROD_SSH_PRIVATE_KEY="${PROD_SSH_PRIVATE_KEY}"
+      --build-arg PROD_STATIC_DEPLOY_LOCATION=${PROD_STATIC_DEPLOY_LOCATION}
+      --build-arg PROD_APM_SERVER_URL=${PROD_APM_SERVER_URL}
+      -t $IMAGE_NAME
+      -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+    - docker push $IMAGE_NAME
+    - docker image rm $IMAGE_NAME
+    - docker image rm $IMAGE_TAG
+    - docker image prune -f
+
+  after_script:
+    - docker logout $CI_REGISTRY
+
+  only:
+    - /^v\d\..*$/
+
+manual_publish_aliyun_serverless:
+  stage: publish
+  when: manual
+
+  script:
+    - wget --spider ${PROD_DEPLOY_HOOK_URL} # 触发自动部署
+
+  only:
+    - /^v\d\..*$/
+
+  except:
+    - branches
