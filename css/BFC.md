@@ -27,9 +27,9 @@ http://www.ziyi2.cn/2017/08/02/%E6%B8%85%E9%99%A4%E5%92%8C%E5%8E%BB%E9%99%A4%E6%
 2. float 元素能浮动到的位置会受之前浮动元素的影响
 3. clear 清除浮动，找出干净的空间来做浮动
 
-### Block Contaniner:能容纳正常流的盒，里面就有 BFC
+### Block Container:能容纳正常流的盒，里面就有 BFC
 
-1. dispaly:block
+1. display:block
 2. display:inline-block
 3. display:table-cell
 4. flex item ：flex 的子元素
@@ -38,12 +38,12 @@ http://www.ziyi2.cn/2017/08/02/%E6%B8%85%E9%99%A4%E5%92%8C%E5%8E%BB%E9%99%A4%E6%
 
 ### Block-lever-box:外面有 BFC 的(包括 inline-block)
 
-1. dispaly:block
+1. display:block
 2. display:flex
 3. display:table
 4. display:grid
 
-### Block Box = Block Contaniner+Block-lever-box
+### Block Box = Block Container+Block-lever-box
 
 里外都有 BFC
 
@@ -54,7 +54,7 @@ block-box && overflow :visible
 1. float
 2. 边距折叠
 
-## 什么是 BFC： BFC(Block Formating Context) 块级格式化上下文
+## 什么是 BFC： BFC(Block Formatting Context) 块级格式化上下文
 
 BFC:块级格式化上下文，它决定了元素如何对其内容进行定位，以及与其他元素间的关系
 是一个独立的容器，容器内部的布局和外部毫不相干,浮动元素,绝对定位元素,非块级容器及 overflow 不为 visible 的块级盒子,都会为他们的内容创建 BFC.
@@ -64,7 +64,7 @@ BFC:块级格式化上下文，它决定了元素如何对其内容进行定位�
 1. 根元素，父元素与正常文件流的子元素（非浮动子元素）自动形成一个 BFC
 2. 浮动元素（元素的 float 不是 none）
 3. 绝对定位元素 (元素 position 为 absolute 或 fixed)
-4. 符合 Block Contaniner 的元素
+4. 符合 Block Container 的元素
    -. 内联元素（元素 display：inline-block）
    -. 表格单元格（元素 display：table-cell）
    -. 表格标题（元素 display：table-caption）
@@ -91,56 +91,81 @@ BFC:块级格式化上下文，它决定了元素如何对其内容进行定位�
 
 ## BFC 解决的问题：
 
-1. 自适应两列布局
-   .left{
-   width: 100px;
-   height: 150px;
-   float: left;
-   background: #f66;
-   }
-   .right{
-   height: 200px;
-   background-color: #3ebcee;
-   overflow: hidden;
-   }
-   <div>
-   <div className="left"></div>
-   <div className="right"></div>
-   </div>
+1. 父元素高度塌陷问题
+   在正常文档流中父元素如果没高度，需要子元素撑起来，如果子元素设置成了 BFC 就会脱离文档流，导致父元素塌陷
 
-2. 清除元素内部浮动问题,子元素如果设置 BFC，父元素没有设置，则会出现高度塌陷问题
-给子元素设置 BFC,父元素也设置 BFC
-.parent{
-border: 5px solid red;
-width: 300px;
-overflow:hidden
-}
-.child{
-width: 100px;
-height: 100px;
-border: #ffb685 2px solid;
-float: left;
-}
- <div className="parent">
-    <div className="child"></div>
-    <div className="child"></div>
- </div>
-3. 垂直 margin 折叠问题,在一个 BFC 中，指两个或多个盒子在垂直方向上（兄弟元素或是父子元素），会发生 margin 重叠，且是以最大的外边距为准。且只发生在 BFC 中
-例如：下面的两个 P 标签的 margin 为 100，应该为 200，所以在外面包裹一层设置 BFC
-.p-container p{
-color: #f55;
-background: #fcc;
-width: 200px;
-line-height: 100px;
-text-align:center;
-margin: 100px;
-}
-   <div className="p-container">
-      <div style={{overflow:'hidden'}}>
-      <p>hahha</p>
-      </div>
-      <p>haha</p>
+   解决方法：给父元素设置（BFC） 如：overflow:hidden
+
+   ```css
+   .parent {
+     border: 5px solid red;
+     width: 300px;
+     overflow: hidden;
+   }
+   .child {
+     width: 100px;
+     height: 100px;
+     border: #ffb685 2px solid;
+     float: left;
+   }
+   ```
+
+   ```html
+   <div className="parent">
+     <div className="child"></div>
+     <div className="child"></div>
    </div>
+   ```
+
+2. margin 重叠
+   指两个或多个盒子在垂直方向上（兄弟元素或是父子元素），会发生 margin 重叠，且是以最大的外边距为准。且只发生在 BFC 中。
+   例如：下面的两个 P 标签的 margin 为 100。实际应该为 200。
+   解决办法在外面包裹一层设置 BFC
+
+   ```css
+   .p-container p {
+     color: #f55;
+     background: #fcc;
+     width: 200px;
+     line-height: 100px;
+     text-align: center;
+     margin: 100px;
+   }
+   ```
+
+   ```html
+   <div className="p-container">
+     <div style="{{overflow:hidden}}">
+       <p>hahha</p>
+       <p>haha</p>
+     </div>
+   </div>
+   ```
+
+3. 清除浮动
+   给父元素也设置 BFC,例如给父级元素添加 overflow:hidden 属性
+4. 自适应两列布局
+
+   ```css
+   .left {
+     width: 100px;
+     height: 150px;
+     float: left;
+     background: #f66;
+   }
+   .right {
+     height: 200px;
+     background-color: #3ebcee;
+     overflow: hidden;
+   }
+   ```
+
+   ```html
+   <div>
+     <div className="left"></div>
+     <div className="right"></div>
+   </div>
+   ```
 
 ## 高度塌陷产生的原因：
 
@@ -153,20 +178,24 @@ margin: 100px;
 1)可以在父元素尾部追加空的 div 标签，并利用 clear:both 解决塌陷 <div style="clear:both;"></div>
 
 2)通过 after 伪元素设置来清除浮动 ,上面例子 2
-.parent::after{
-content: "";
-display: block;
-clear: both;
+
+```css
+.parent::after {
+  content: '';
+  display: block;
+  clear: both;
 }
+```
 
 2. BFC
    给父元素也设置 BFC,例如给父级元素添加 overflow:hidden 属性
 
-清除浮动的原理：
+### 清除浮动的原理：
+
 可以设置元素禁止浮动元素出现在它的左侧，右侧，或者双侧。
 清除区域是在元素的外边距之上增加一些额外的间隔，（确保浮动元素和该元素不会重叠）
 
-## 采用 BFC 解决高度塌陷和 clear 属性清除浮动相比的优势是什么？
+### 采用 BFC 解决高度塌陷和 clear 属性清除浮动相比的优势是什么？
 
 1. clear 属性规定的是元素哪一侧不允许有其他浮动元素，但是我们并不是想让父元素周围没有其他浮动元素，而是减少浮动带来的影响，也就是使浮动元素闭合。
 2. 会增加一些无用的标签

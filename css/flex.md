@@ -54,3 +54,12 @@ aligin-self 子容器如何沿交叉轴排列
 | 单行 | 固定高度 |是| 否（但是有设置 flex-wrap:wrap;时，有效果）|
 | 多行 | 不指定高度 | 是| 否|
 | 多行 | 固定高度 | 是| 是|
+
+# flex 中 1 代表什么
+
+flex 是 flex-grow ,flex-shrink,flex-basis 的结合
+flex-grow:项目的放大比例：默认为 0
+flex-shrink:项目的缩小比例：默认为 1 ,若空间不足，则缩小比例
+flex-basis:计算项目空间，默认为 auto,即项目本身大小
+
+flex 1 === flex 1 1 0%
