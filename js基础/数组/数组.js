@@ -41,6 +41,7 @@ let arrp = [2, 3, 4]
 
 //unshift() 向数组开头添加元素，返回数组的长度
 //console.log(arrp.unshift(1),arrp)
+//arr.splice(0,0,"apple") 向数组头部添加元素
 
 //reverse ()反转数组
 //console.log(arrp.reverse())//[4,3,2]

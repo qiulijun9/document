@@ -21,7 +21,6 @@ let arr = [12, 3, 43, 546, 3, 3, 5, 6, 7, 8, 9, 5, 7, 78, 45]
 
 // console.log(newArr);
 
-
 // indexOf底层实现也是for 循环，时间复杂度同双层for 循环
 // let newArr = [];
 // for (let i = 0; i < arr.length; i++) {
@@ -37,7 +36,7 @@ let arr = [12, 3, 43, 546, 3, 3, 5, 6, 7, 8, 9, 5, 7, 78, 45]
 // })
 // console.log(newArr);
 
-//obj 
+//obj
 // let obj = {}
 // let newArr = [];
 // for (let i = 0; i < arr.length; i++) {
@@ -49,10 +48,26 @@ let arr = [12, 3, 43, 546, 3, 3, 5, 6, 7, 8, 9, 5, 7, 78, 45]
 // console.log(newArr);
 
 //　去重包含NaN, 1,"1" ,{}
-let ary = [false, true, undefined, null, NaN, 0, 1, 1, "1", "1", {}, {}, "a", "a", NaN];
+let ary = [
+  false,
+  true,
+  undefined,
+  null,
+  NaN,
+  0,
+  1,
+  1,
+  '1',
+  '1',
+  {},
+  {},
+  'a',
+  'a',
+  NaN,
+]
 let obj = {}
-let newArr = ary.filter((item) => {
-  let key = typeof item + item;
-  return obj.hasOwnProperty(key) ? false : (obj[key] = true);
+let newArr = ary.filter(item => {
+  let key = typeof item + item
+  return obj.hasOwnProperty(key) ? false : (obj[key] = true)
 })
 console.log(newArr)
