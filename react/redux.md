@@ -101,8 +101,8 @@ dispath 是 store.dispatch()函数
 纯函数：
 
 1.  不能修改传入的参数
-2.  不得调用非函数，Data.now(),Math.random()等
-3.  不得执行副作用的操作（不确定性），如请求和路由跳转（请求之后返回的数据可能是不确定的）
+2.  不得执行副作用的操作（不确定性），如请求和路由跳转（请求之后返回的数据可能是不确定的）
+3.  不得调用非函数，Data.now(),Math.random()等
 
 因为 reducer 是依赖不可变值的，不能直接修改 state 中的值，需要返回新的值，因为 reducer 是纯函数，就能保障 state 不被修改
 
@@ -122,3 +122,66 @@ https://juejin.im/post/58bcb5821b69e6006b24ede0
 3. mobx 相对比较简单，更多的使用面向对象的思维，redux 需要借助中间节来处理异步和副作用
 4. redux 修改数据时比较繁琐，mobx 通过注解和 action 就可以定义修改变量
 5. mobx 适合数据不复杂的应用,很多状态没法回溯,redux 适用于回溯需求的应用
+
+# redux 三大原则：
+
+1. 所有的 state 都存在一颗 store 中
+2. state 是只读的，只能通过触发 action 来修改
+3. 只能通过纯函数来修改
+
+- store 仓库 存放 state
+  作用：
+
+  1.  维持应用的 state
+  2.  getState() 获取 state
+  3.  dispatch(action) 更新 state
+  4.  subscribe(listener) 注册监听器
+  5.  subscribe(listener) 返回函数的注销监听器
+
+  根据 reducer 来创建 store，来和 reducer 关联起来
+
+  ```js
+  let store = createStore(todoApp)
+  const unSubscribe = store.subscribe(() => {
+    console.log(store.getState())
+  })
+
+  store.dispatch(addTodo('learning'))
+
+  unSubscribe()
+  ```
+
+- action 只是描述发生了什么，就是一个普通的 js 对象
+  通过 store.dispatch() 将 action 传给 store
+
+  ```js
+  // action types
+  const ADD_TODO = 'ADD_TODO'
+
+  // 生成 action 的函数
+  function addTodo(text) {
+    return {
+      type: ADD_TODO,
+      text,
+    }
+  }
+
+  dispatch(addTodo(text))
+  ```
+
+- reducer 是一个纯函数，接收 state 和 action 并返回新的 state 的函数发送给 store
+  多个 小的 reducer 会合并在一起成一个大的 reducers，来管理整个 state
+  redux 提供了 combineReducers 来合并所有的 reducer
+
+  ```js
+  function todoApp(state: initState, action) {
+    switch (action.type) {
+      case ADD_TODO:
+        return Object.assign({}, state, { text: action.text })
+      // ...
+    }
+  }
+
+  // combineReducers
+  function todoApp = combineReducers({todos,...})
+  ```

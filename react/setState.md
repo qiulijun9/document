@@ -32,13 +32,13 @@ react 在遇到传递给 setState()多次调用时，会将其合并成一个进
 
 ```
 会合并成一个   count :1
-  this.state({
+  this.setState({
     count : this.state.count + 1
   })
-  this.state({
+  this.setState({
     count : this.state.count + 1
   })
-  this.state({
+  this.setState({
     count : this.state.count + 1
   })
 
@@ -49,17 +49,17 @@ react 在遇到传递给 setState()多次调用时，会将其合并成一个进
 
 ```
 会直接加3
-  this.state((preconut)=>{
+  this.setState((preconut)=>{
       return {
         count : preconut.count + 1
       }
   })
-   this.state((preconut)=>{
+   this.setState((preconut)=>{
       return {
         count : preconut.count + 1
       }
   })
-   this.state((preconut)=>{
+   this.setState((preconut)=>{
       return {
         count : preconut.count + 1
       }

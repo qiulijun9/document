@@ -177,3 +177,49 @@ const dispatch = useDispatch()
     [dispatch]
   )
 ```
+
+# useState 实现
+
+```js
+let index = 0
+let stateArr: any[] = []
+
+export function useState<T>(initialState: T): [T, (newState: T) => void] {
+  const currentIndex = index
+  stateArr[currentIndex] = stateArr[currentIndex] || initialState
+
+  function changeState(newState: T) {
+    stateArr[currentIndex] = newState
+    render()
+  }
+
+  index++
+
+  return [stateArr[currentIndex], changeState]
+}
+```
+
+# useEffect 实现
+
+```js
+const allDeps: Array<any[] | undefined> = []
+let index = 0
+export function useEffect(callback: () => void, depArr?: any[]) {
+  // 没有依赖
+  if (!depArr) {
+    callback()
+    allDeps[index] = depArr
+    index++
+    return
+  }
+
+  //依赖发生变化
+  const deps = allDeps[index] // 上次的依赖项
+  const hasChange = deps ? depArr.some((item, i) => item !== deps[i]) : true
+  if (hasChange) {
+    callback()
+    allDeps[index] = depArr
+  }
+  index++
+}
+```
