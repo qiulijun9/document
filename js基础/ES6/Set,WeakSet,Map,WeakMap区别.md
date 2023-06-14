@@ -44,7 +44,7 @@ return Array.from(new Set(array))
 deepclone 时用到了 map
 
 ```js
-function deepClone(source, map = new Map()) {
+function deepClone(source, map = new weakMap()) {
 	if (map.get(source)) return source;
 	if (isObject(source)) {
 		map.set(source, true);

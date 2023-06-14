@@ -4,7 +4,17 @@
 promise
 async await
 generator
+# script标签  属性 “defer”  和 “async”的区别
+都是用来异步加载脚本文件的,<script> 主要用来加载js 资源
 
+defer 属性： 异步加载完文件，在dom 加载完成后，DOMContentLoaded 之前 执行脚本文件，多个 defer 文件顺序执行
+
+async 属性：异步加载完文件之后，立即执行，有多个 async 标签的不会按顺序依次执行，会并行的下载和执行文件
+# link  标签属性 “prefetch” 和 “preload” 区别
+都是用来预加载资源的，提高页面加载的速度和性能，<link> 标签主要用来加载 css, 图片，字体等，可以加载js
+rel="preload" 是遇到该标签，就立刻去加载该文件，确保在实际用到该文件前就已经加载好
+
+rel="prefetch"  是指浏览器在空闲的时候，异步去加载这些资源
 # 快排
 
 ```js
@@ -27,7 +37,6 @@ function quickSort(arr) {
   return quickSort(left).concat([pointVal], quickSort(right))
 }
 ```
-
 # reduce
 
 ```js
@@ -78,10 +87,59 @@ Object.prototype 原型
 判断类型：
 
 1. typeof 不能判断引用类型和 null 都会返回 object
-2. instance of 不能判断基本类型,但可以判断引用类型和装箱后的基本类型 是基于原型链的实现
+2. instanceof 不能判断基本类型,但可以判断引用类型和装箱后的基本类型 是基于原型链的实现
 3. Object.prototype.toString.call() 类型都可以判断
 4. isXXX Array.isArray() isNaN()
 
+
+# 如何实现浅拷贝，和深拷贝
+
+浅拷贝 
+对象的浅拷贝
+- object.assign() 
+- 扩展运算符 ...
+
+数组的浅拷贝
+- Array.from() 
+- [].concat()  
+- [].slice()
+
+
+深拷贝：
+-  JSON.stringify  JSON.parse
+借用浅拷贝递归实现
+
+```js
+function deepClone(obj, map = new WeakMap()) {
+  if (obj === null) return obj; // 如果是null或者undefined就不进行拷贝操作
+    // 基本类型的值的拷贝
+  if (typeof obj !== "object") return obj;
+
+  if (obj instanceof Date) return new Date(obj);
+  if (obj instanceof RegExp) return new RegExp(obj);
+
+  // 是对象的话就要进行深拷贝
+  if (map.get(obj)) return map.get(obj);
+  let cloneObj = Array.isArray(obj) ? [] :{};
+  map.set(obj, cloneObj);
+
+  for (let key in obj) {
+    // 判断是否是自己的属性 而不是从原型链继承来的
+    if (obj.hasOwnProperty(key)) {
+      // 实现一个递归拷贝
+      cloneObj[key] = deepClone(obj[key], map);
+    }
+  }
+  return cloneObj;
+}
+
+
+let obj = { name: 1, address: { x: 100 } };
+obj.o = obj; // 对象存在循环引用的情况
+let d = deepClone(obj);
+obj.address.x = 200;
+console.log(d);
+```
 # es5 的继承 ，es6 的继承
 
 es5
@@ -193,14 +251,76 @@ e5 的继承是创建子类的实例对象，再创建父类的方法添加到 t
 
 es6 先创建父类的实例对象 this(也就是使用 super())，然后再用子类的构造函数修改 this
 
-# 数组 forEach map
+# 数组遍历 for,for...in,for...of,forEach,map
 
-相同点
+forEach,map相同点
 都是循环遍历数组中的每一项 forEach 和 map 方法里每次执行匿名函数都支持 3 个参数，参数分别是 item（当前每一项）、index（索引值）、arr（原数组）
+不能使用 break ,continue ，但能使用 return 跳出循环
 
-不同点
-forEach 没有返回值
-map 有返回值 返回一个新数组
+map :
+- 数组的自带方法之一，返回一个新数组
+- 不改变原数组。
+```js
+const newArray = array.map(function(value, index, arr) {
+    return value * 2;
+});
+```
+
+forEach : 
+- 数组的自带方法之一，对于数组中每一个元素都执行这个回调函数，匿名函数都支持 3 个参数，参数分别是 item（当前每一项）、index（索引值）、arr（原数组）
+- forEach 没有返回值
+
+```js
+array.forEach(function(value, index, arr) {
+    console.log(value);
+});
+```
+
+for :
+传统的循环结构，可以使用 break ,continue, return 来跳出循环或者当前循环。
+
+for of: 
+- 用来遍历实现了 Iterator 接口的， 如 数组，类数组，Map,Set,字符串等,
+- 遍历对象需要通过和 Object.keys(),
+- 可以使用 break ,continue, return 来跳出循环或者当前循环。
+
+```js
+let iterable = [10, 20, 30];
+
+for (let value of iterable) {
+    value += 1;
+    console.log(value); // 11,21,31
+}
+```
+
+for in :
+- 一般用来遍历对象，可以遍历到<b>原型链上的属性</b> （i {} in 对象，在对象里）
+- 如果用 for in 遍历数组只能打印出<b>索引值</b>，不推荐，
+- 可以使用 break ,continue, return 来跳出循环或者当前循环。
+```js
+Object.prototype.objCustom = function () {}; // 原型链上的属性
+Array.prototype.arrCustom = function () {};  // 原型链上的属性
+
+const iterable = [3, 5, 7];
+iterable.foo = "hello";
+
+for (const i in iterable) {
+  console.log(i);
+}
+// "0", "1", "2", "foo", "arrCustom", "objCustom"  只能打印出索引值
+
+for (let prop in ['a', 'b', 'c'])
+  console.log(prop);            // 0, 1, 2 (array indexes)
+
+for (let prop in 'str')
+  console.log(prop);            // 0, 1, 2 (string indexes)
+
+for (let prop in {a: 1, b: 2, c: 3})
+  console.log(prop);            // a, b, c (object property names)
+
+for (let prop in new Set(['a', 'b', 'a', 'd']))
+  console.log(prop);            // undefined (no enumerable properties)
+```
 
 # let const var
 
@@ -210,9 +330,27 @@ map 有返回值 返回一个新数组
 重复声明
 默认值
 
-# 事件循环机制
+# 事件循环机
 
 https://github.com/qiulijun9/Q-A/issues/1
+事件循环机制是指在执行宏任务的过程中，如果遇到了微任务，会将其添加到微任务队列中，在该次宏任务执行完毕之后，会依次执行微任务队列中的任务，如果遇到了宏任务则添加到下次的宏任务队列中，依次循环。
+由宿主（浏览器）发起的任务（比如 settimeout)是宏任务，由 js 引擎发起的任务是微任务。js 引擎等待宿主环境给它分配宏任务，这段时间需要事件循环机制。
+宏任务中可能会有 promise 发起的异步任务，为了保障这些异步任务都在同一个宏任务中执行，所以每个宏任务中会有一个微任务队列，从而可以进行事件轮询。
+
+常见的宏任务：主线程的任务 ,setTimeout,setInterval,setTmmediate，I/O,messageChannel
+
+主线程执行的宏任务主要有：
+渲染事件
+用户交互事件
+js 脚本执行
+网络请求，文件读写等
+宏任务的执行过程：
+
+
+微任务
+常见的微任务：promise.then ,await 之后的内容,MutationObserver，process.nextTick(nodejs)，v8 垃圾回收过程
+
+
 
 # node 事件循环机制
 
@@ -277,16 +415,34 @@ indexedDB:
 - 可以存储二进制
 
 # 跨域解决办法
-
+协议，端口和 IP 满足同源
 1. JSONP
    利用<script>发出请求，带着 callback 函数，由服务端传递值，客户端执行回调函数来获取
 
    缺点：只支持 get 请求，不安全可能会遭到 xss 攻击
 
-2. cors
-   浏览器端设置请求头 origin 字段，服务端设置响应头 Access-Control-Allow-Methods， 等
+2. cors（Cross-Origin Resource Sharing）
+   cors 是一种机制，使用额外的http 头来告诉浏览器允许执行哪些代码（  浏览器端设置请求头 origin 字段），需要服务端指定响应头Access-Control-Allow-Origin来允许特定来源.
+   如果设置为* ，表示允许任何来源的跨域请求。
+   - 配置Access-Control-Allow-Methods 头，允许哪些Http 方法（post,get）来获取服务端的资源。
+   ```
+   header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+   ```
+   -  配置Access-Control-Allow-Headers头，允许设置哪些请求头
+    ```
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+    ```
 
    简单请求，复杂请求
+   简单请求是满足以下条件的请求：
+   - 使用get,post ,head 方法之一
+   - Content-Type 只能是application/x-www-form-urlencoded、multipart/form-data或text/plain中的一种。
+   简单请求会在真正发请求前，先发送一个options 请求，服务端会在响应头上加上 Access-Control-Allow-Origin 和 Access-Control-Allow-Methods 字段，告诉浏览器允许哪些方法来获取资源
+
+   复杂请求
+   - 使用PUT、DELETE等非GET/POST/HEAD方法
+   - 不满足简单请求的头部字段
+   复杂请求也会在真正请求前，发送一个options 请求，会比简单请求多一个 Access-Control-Request-Headers 字段，只有请求头都满足这些字段头，才允许进行真正的发请求。
 
 3. postMessage
    postMessage()方法允许来自不同源的脚本采用异步方式进行有限的通信，可以实现跨文本档、多窗口、跨域消息传递
@@ -342,34 +498,6 @@ Function.prototype._proto_ === Object.prototype
 
 
 
-# 如何实现浅拷贝，和深拷贝
-
-浅拷贝 object.assign()
-
-深拷贝：
-借用浅拷贝递归实现
-
-```js
-function deepClone(target, map = new WeakMap()) {
-  if (typeof target === 'object') {
-    let cloneTarget = Array.isArray(target) ? [] : {}
-    // 循环引用
-    if (map.get(target)) {
-      return map.get(target)
-    }
-
-    map.set(target, cloneTarget)
-
-    for (key in target) {
-      cloneTarget[key] = deepClone(target[key], map)
-    }
-    return cloneTarget
-  } else {
-    return target
-  }
-}
-```
-
 # h5 的新特性
 
 1. 语义化标签
@@ -415,21 +543,211 @@ typeof Number("123") 返回 number
 new Number("123") = Number{123} 返回包装后的类型
 Number("123") = 123
 
-# for of for in
+# 函数柯里化
+### 定义：
+在数学和计算机科学中，柯里化是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
 
-for in 一般用来遍历对象，可以遍历到原型链上的属性 （i {} in 对象，在对象里） ，如果用 for in 遍历数组只能打印出索引值，不推荐，不能用 break ,continue ,return 跳出函数体
+```js
+function add(a, b) {
+    return a + b;
+}
 
-for of 用来遍历实现了 Iterator 接口的， 如 数组，类数组，map,set,字符串等,遍历对象需要通过和 Object.keys(),可以使用 break ,continue ,return 跳出函数体
+// 执行 add 函数，一次传入两个参数即可
+add(1, 2) // 3
+
+// 假设有一个 curry 函数可以做到柯里化
+var addCurry = curry(add);
+addCurry(1)(2) // 3
+```
+
+对于已经柯里化后的fn 函数来说，如果实参的数量 === 形参的数量，那就执行原函数，当传入的实参数量小于实参数量时，那就返回一个函数用于接收剩余的参数，直到实参数量于形参数量相同，执行原函数。
+
+### 何时使用？
+调用方法时，参数复用。 
+1. 求和函数
+2. redux
+3. 比如获取对象的某个属性的方法
+```
+var prop = curry(function (key, obj) {
+    return obj[key]
+});
+
+var name = person.map(prop('name')) // 能让代码更加易懂
+```
+
+
+eg:
+```js
+function ajax(type, url, data) {
+    var xhr = new XMLHttpRequest();
+    xhr.open(type, url, true);
+    xhr.send(data);
+}
+
+// 虽然 ajax 这个函数非常通用，但在重复调用的时候参数冗余
+ajax('POST', 'www.test.com', "name=kevin")
+ajax('POST', 'www.test2.com', "name=kevin")
+ajax('POST', 'www.test3.com', "name=kevin")
+
+// 利用 curry
+var ajaxCurry = curry(ajax);
+
+// 以 POST 类型请求数据
+var post = ajaxCurry('POST');
+post('www.test.com', "name=kevin");
+
+// 以 POST 类型请求来自于 www.test.com 的数据
+var postFromTest = post('www.test.com');
+postFromTest("name=kevin");
+```
+
+### 实现
+
+当实参 === 形参时返回该函数 ，否则继续执行返回剩余的参数
+
+
+```js
+
+function  sub_curry(fn){
+  const args= [].slice.call(arguments,1)
+
+  return function(){
+    const currentArgs = args.concat([].slice.call(arguments))
+   return fn.apply(this,currentArgs)
+  }
+}
+
+
+function curry(fn,length){
+   length = length || fn.length;
+
+   return function(){
+     if(arguments.length < length){
+        var combined = [fn].concat(Array.prototype.slice.call(arguments));
+        const currentArgs = sub_curry.apply(this, combined)
+       return curry(currentArgs,length - arguments.length)
+
+     }else{
+      return fn.apply(this,arguments)
+     }
+
+   }
+}
+
+// 简单版 1
+function curry(fn, args = []) {
+  return function () {
+    const _args = [...args, ...arguments];
+    // 参数长度不够，等待下一次调用补齐
+    if (_args.length < fn.length) {
+      return curry.call(this, fn, _args);
+    }
+    // 执行函数
+    return fn.apply(this,_args);
+  };
+}
+// 简单版 2
+function curry(fn) {
+  return function curried(...args) {
+    if (args.length >= fn.length) {
+      return fn.apply(this, args);
+    } else {
+      return function (...moreArgs) {
+        return curried.apply(this, [...args,...moreArgs]);
+      };
+    }
+  };
+}
+
+function curry(fn, args =[]) {
+    return function() {
+        const _args = [...args, ...arguments];
+        if (_args.length < fn.length) {
+            return curry.call(this, fn, _args);
+        }
+        else {
+            return fn.apply(this, _args);
+        }
+    }
+}
+
+const fn = curry(function (a, b, c) {
+  console.log([a, b, c]);
+});
+
+fn("a", "b", "c");
+fn("a", "b")("c");
+fn("a")("b")("c");
+
+
+
+```
 
 # 闭包 ， 闭包使用场景
+在函数内部定义一个函数，并且该函数能够访问内部变量时，就形成了闭包。
 
-闭包就是能够访问函数内部变量的函数，创建方法是在函数内部创建另一个函数
+闭包中的变量会一直保存在内存中，不会被垃圾回收机制回收，有可能造成内存泄漏。
+
+```js
+function createCounter() {
+  let count = 0;
+
+  return function() {
+    count++;
+    console.log(count);
+  };
+}
+```
 
 应用：
 
-1. 定义模块，将模块内部的函数暴露给外部
+1. 保护变量，在定义模块开发时，保护局部变量不被外部访问和修改，每个js模块都是一个独立的作用域，当在这模块中提供了可供外部访问的变量和方法时就产生了闭包
 2. 给对象设置私有属性
-3. 立即执行函数
+3. 立即执行函数,能够获取正确的值，模仿块级作用域
+
+for(var i=0;i<10;i++){
+ ((j)=>{
+ setTimeout(function(){
+        console.log(j)//1-10
+    },1000)
+  })(i)
+}
+4. 函数柯里化
+5.  在react hook 中使用的闭包
+eg
+```js
+// state.js
+let stateArr = null;
+let index = 0 
+export const useState = (value: number) => {
+  // 第一次调用时没有初始值，因此使用传入的初始值赋值
+  stateArr[index]  = stateArr[index] || value;
+
+  function dispatch(newValue) {
+    stateArr[index]  = newValue;
+    // 假设此方法能触发页面渲染
+    render();
+  }
+  index++;
+  return [stateArr[index] , dispatch];
+}
+
+
+import React from 'react';
+import {useState} from './state';
+
+function Demo() {
+  // 使用数组解构的方式，定义变量
+  const [counter, setCounter] = useState(0);
+
+  return (
+    <div onClick={() => setCounter(counter + 1)}>hello world, {counter}</div>
+  )
+}
+
+export default Demo();
+```
+当在Demo 中使用useState 时就访问了state 内部的变量，此时就产生了闭包
 
 # 浮点数的处理
 
@@ -479,10 +797,7 @@ Function.prototype.myBind = function (context) {
   fbound.prototype = new fNOP()
   return fbound
 }
-
-
 ```
-
 
 # 排序，时间复杂度，空间复杂度
 
@@ -510,6 +825,7 @@ findIndex
 
 # 节流，防抖，使用场景
 
+// 写一个防抖方法
 ```js
 function debounce(fn, interval) {
   let timer = null
@@ -526,86 +842,39 @@ function debounce(fn, interval) {
     }, interval)
   }
 }
-
-function throttle(fn, interval) {
-  let last = null
-
-  return function () {
-    let now = Date.now()
-    let self = this
-    let args = arguments
-
-    if (last - now > interval) {
-      clearTimeout(timer)
-    }
-    last = now
-
-    setTimeout(() => {
-      fn.apply(self, args)
-    }, interval)
-  }
-}
-
-function throttle(fn, interval) {
-  let timer = null
-
-  return function () {
-    let self = this
-    let args = arguments
-    if (!timer) {
-      timer = setTimeout(() => {
-        fn.apply(self, args)
-
-        timer = null
-      }, interval)
-    }
-  }
-}
-
-function throttle(fn, interval) {
-  let timer = null
-  let startTime = 0
-
-  return function () {
-    let self = this
-    let args = arguments
-    let currentTime = Date.now()
-    let running = interval - (currentTime - startTime)
-
-    clearTimeout(timer)
-
-    if (running <= 0) {
-      fn.apply(this, args)
-      startTime = Date.now()
-    } else {
-      timer = setTimeout(() => {
-        fn.apply(this, args)
-        startTime = Date.now()
-      }, running)
-    }
-  }
-}
 ```
 
 防抖： input 联想 ,窗口大小改变
 节流： 滚动事件，鼠标不断点击
-
-
-
-# Type interface 什么时候用
-
-- 如是在定义一些库的话可以使用 interface ,方便使用者去扩展
-- 如果是定义一些属性的话可以使用 type
-- type 和 interface 能达到一样的效果，但 interface 可以做合并，可以做添加，type 不能做二次修改,type 可以定义一些基本类型的变量，interface 不可以
-- type 可以动态计算属性,interface 不可以
-
 ```js
-type Keys = "小王" | "小文"
-type X = {
-  [k in keys]:string
+function throttle(func,delay){
+  let time =null;
+  let lastTime =0;
+
+  return function(...args){
+    const now = new Date().getTime();
+
+    if(now - lastTime >= delay){
+      func.apply(this,args);
+      lastTime =now;
+
+    }else{
+      clearTimeout(time);
+      time = setTimeout(()=>{
+        fuc.apply(this,args);
+        lastTime = new Date().getTime();
+      },delay -(now - lastTime))
+    }
+  }
 }
 ```
 
+
+# ?. !. || 符号的作用
+1. ?. 可选链 用来访问对象 避免中间某个属性 是 null 或 undefined 而抛出异常 eg: Uncaught TypeError: Cannot read properties of undefined (reading 'name') at <anonymous>:8:32
+2. !. 非空类型断言 ，表示这个值一定不为 null 或 undefined ,跳过ts 类型检查。 x!.foo()  表示 x 一定不为null 或 undefined
+3. || 逻辑或运算符，a||b  如果当 a表达式为 false 时 则返回 b 表达式，，反之，返回a 表达式
+ 
 # 以下代码输出
 
 ```js
@@ -691,6 +960,7 @@ function checkCircularReference(obj) {
         checkItem(item, depsMemo, [...chain])
       })
     }
+    
     checkItem(key, {}, [])
   }
   return result
@@ -775,164 +1045,166 @@ createNewRequest(1, [p1, p2, p3, p4]).then(res => {
 3. js 更新缓存
    window.applicationCache.update();
 
-# webpack 的优化
-
-1. exclude/include
-2. cache-loader
-3. happypack
-4. noParse
-5. IgnorePlugin
-
-# webpack loader css 顺序
-
-less-loader 加载.less 文件
-css-loader 加载 .css 文件
-styled-loader 将样式通过<style>标签插入到 header 中
-
-执行顺序是 less-loader ---> css-loader --->styled-loader
-webpack 加载是从右往左加载
-use: [
-'style-loader',
-'css-loader',
-'less-loader'
-]
-
-# loader plugin，常用
-
-常用的 loader
-image-loader,sass-loader,css-loader,style-loader,babel-loader...
-
-常用的 plugin
-html-webpack-plugin,ignore-plugin,mini-css-extract-plugin (分离样式文件)，happypack-plugin
 
 
+## 图片懒加载如何做
+图片懒加载的目的是在用户滚动到图片可见区域时进行加载，以提高页面初始加载速度。以下是一种使用IntersectionObserver实现图片懒加载的方法：
 
+首先，在HTML中为图片元素添加一个data-src属性，该属性包含实际的图片URL。将src属性留空或设置为占位符图片。
+
+```htmL
+<img class="lazy" data-src="path/to/your/image.jpg" src="path/to/placeholder.jpg" alt="Image description">
+```
+
+接下来，编写JavaScript代码以实现懒加载功能：
+
+```js
+document.addEventListener('DOMContentLoaded', function () {
+  // 获取所有带有类名 'lazy' 的图片元素
+  const lazyImages = [].slice.call(document.querySelectorAll('img.lazy'));
+
+  // 创建 IntersectionObserver 实例
+  const lazyImageObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      // 判断图片元素是否进入可见区域
+      if (entry.isIntersecting) {
+        const lazyImage = entry.target;
+        // 将 data-src 属性的值设置为 src 属性，开始加载图片
+        lazyImage.src = lazyImage.dataset.src;
+        // 移除 'lazy' 类名
+        lazyImage.classList.remove('lazy');
+        // 取消观察该图片元素
+        lazyImageObserver.unobserve(lazyImage);
+      }
+    });
+  });
+
+  // 观察所有 'lazy' 图片元素
+  lazyImages.forEach((lazyImage) => {
+    lazyImageObserver.observe(lazyImage);
+  });
+});
+```
+
+在这个例子中，我们使用了IntersectionObserver API 来监听带有类名 'lazy' 的图片元素。当图片元素进入可见区域时，我们将data-src属性的值设置为src属性，从而开始加载图片。最后，我们移除图片元素的'lazy'类名并取消对该图片元素的观察。
+
+
+# ESM 和 CommonJS 规范的区别
+1. 语法区别
+EXM 采用 import 和export导入/导出模块，CommonJS 采用require/module.exports 导入导出模块
+2. 加载方式不同
+   ESM 在编译的时候，就会确定依赖关系和加载顺序
+   CommonJs 是动态加载，在运行的时候才能确定依赖关系，
+   是同步加载模块，模块的加载会阻塞js的加载，在浏览器端不太适用
+3. 导出方式不同
+ESM 导出的是值的引用，而 CommonJS 导出的是值的浅拷贝。 ESM 导出值变化，导入也会变化，但是在CommonJS 中不会受到影响。
+
+ESM 可以导出多个值，CommonJs 只能导出一个值
+ESM  只能写在最顶层，CommonJS 可以写在判断里
+4. 兼容性
+ESM 目前的主流浏览器已经支持 ，commJS 在使用是需要转换
+
+# 如何终止异步方法
+
+```js
+const controller = new AbortController();
+const signal = controller.signal;
+
+fetch(url, { signal })
+  .then(response => {
+    // 处理响应数据
+  })
+  .catch(error => {
+    if (error.name === 'AbortError') {
+      console.log('请求已被中止');
+    } else {
+      console.error('请求错误', error);
+    }
+  });
+
+
+// 终止请求
+controller.abort();
+```
 # generator 实现
 
 # promise 规范
 
 # 观察者设计者模式
 
-# 如何终止异步方法
-
-# websocket
-
-# 怎么接收后端传进来的 long 型的数据
-
-# antd 3 和 antd 4 的区别
-
 # node 原生的 API 有哪些，node sync 和普通的有什么区别
-
-# webpack 如何动态加载的
 
 # Async 的并发实现:同时处理一组请求，返回一组处理完的结果，错误也返回
 
-# Webpack 的优化，大小速度，tree-shaking
-
-# 热更新原理 是 id 还是内容
-
 # Promise 的合成事件是同步的还是异步的，哪个方法返回一个新的 promise，缺点
 
+# 数组和链表的区别
+数组 必须是一块连续的内存区域，根据元素下标查找元素，查找速度快， 插入和删除元素较复杂
+链表的存储空间可以不连续 ，查找某个元素较慢需要从链表出发查找，插入和删除元素比较方便
 
-# 函数柯里化
-### 定义：
-在数学和计算机科学中，柯里化是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
+# 堆栈的区别
 
-```js
-function add(a, b) {
-    return a + b;
+- 空间
+栈 是自动分配的相对固定大小的空间
+堆 是动态分配的 大小不固定的内存空间
+
+- 回收
+栈内存的变量基本上使用完毕之后内存就回收了
+堆内存的 不会立即销毁，要检查是否还有其他变量对其的引用
+
+- 基本类型和引用类型
+基本类型一般存储在栈中
+引用类型的值存储在堆中 ，栈中存储指针
+
+基本类型拷贝时传递的是值
+引用类型传递的是值的地址
+
+# async/await 
+用同步的方式来处理异步操作
+async / await 是异步操作的解决方案，是Generator 的语法糖，使用 async 来表示，函数内部使用await 来表示异步
+1.  Aysnc 函数自带执行器，调用方式跟普通函数的调用一样
+2. async 函数的 await 命令后面则可以是 Promise 或者 原始类型的值（Number，string，boolean）
+3. 返回值是Promise 对象
+
+
+# new Proxy
+
+new Proxy(target,handlers)
+
+target 要代理的对象
+handlers 代理对象的操作符
+
+# set 和 weakSet 区别
+set
+接收的是实现 iterable 接口的数据结构
+1. 类似于数组，但成员都是唯一的，无重复值
+2. 可以遍历,方法：forEach(),keys(),values(),entries()
+3. 操作方法：add()has()delete()clear()
+数组去重：
+function dedepe(array){
+return Array.from(new Set(array))
 }
 
-// 执行 add 函数，一次传入两个参数即可
-add(1, 2) // 3
-
-// 假设有一个 curry 函数可以做到柯里化
-var addCurry = curry(add);
-addCurry(1)(2) // 3
-```
-
-对于已经柯里化后的fn 函数来说，如果实参的数量 === 形参的数量，那就执行原函数，当传入的实参数量小于实参数量时，那就返回一个函数用于接收剩余的参数，直到实参数量于形参数量相同，执行原函数。
-
-### 何时使用？
-调用方法时，参数复用。
-参数复用，本质上降低通用性，提高适用性，
-
-eg:
-```js
-function ajax(type, url, data) {
-    var xhr = new XMLHttpRequest();
-    xhr.open(type, url, true);
-    xhr.send(data);
-}
-
-// 虽然 ajax 这个函数非常通用，但在重复调用的时候参数冗余
-ajax('POST', 'www.test.com', "name=kevin")
-ajax('POST', 'www.test2.com', "name=kevin")
-ajax('POST', 'www.test3.com', "name=kevin")
-
-// 利用 curry
-var ajaxCurry = curry(ajax);
-
-// 以 POST 类型请求数据
-var post = ajaxCurry('POST');
-post('www.test.com', "name=kevin");
-
-// 以 POST 类型请求来自于 www.test.com 的数据
-var postFromTest = post('www.test.com');
-postFromTest("name=kevin");
-```
-
-### 实现
-
-当实参 === 形参时返回该函数 ，否则继续执行返回剩余的参数
+# weakSet
+1. 值不能重复，成员只能是对象，不能是其他类型的值
+2. 无法遍历
+3. 操作方法：add() has() delete()
+4. 成员都是弱引用，可以随时消失，不用就会被垃圾回收，不容易造成内存泄露
 
 
-```js
+# vue 和 react 区别
 
-function  sub_curry(fn){
-  const args= [].slice.call(arguments,1)
+1. 设计：Vue.js 采用模板和声明式渲染，强调 HTML 和 JavaScript 的分离，易于理解和学习；
+React.js 则采用组件和函数式编程，强调数据和 UI 的一致性，更适合处理复杂的交互逻辑。
 
-  return function(){
-    const currentArgs = args.concat([].slice.call(arguments))
-   return fn.apply(this,currentArgs)
-  }
-}
+2. 数据绑定：Vue.js 提供了双向数据绑定，可以自动更新视图和数据；即数据的变化可以自动更新视图
+   React.js 则采用单向数据流，数据的更新需要通过状态和属性来实现。
 
+3. 组件化：Vue.js 的组件化非常灵活，可以使用模板编写组件，也可以使用 JS 写组件；
+React.js 的组件化则采用 JSX 语法，将 HTML 和 JavaScript 相结合，更加直观。
 
-function curry(fn,length){
-   length = length || fn.length;
-
-   return function(){
-     if(arguments.length < length){
-        var combined = [fn].concat(Array.prototype.slice.call(arguments));
-        const currentArgs = sub_curry.apply(this, combined)
-       return curry(currentArgs,length - arguments.length)
-
-     }else{
-      return fn.apply(this,arguments)
-     }
-
-   }
-}
-
-// 简单版
-function curry(fn, args = []) {
-  return function () {
-    const _args = [...args, ...arguments];
-    // 参数长度不够，等待下一次调用补齐
-    if (_args.length < fn.length) {
-      return curry.call(this, fn, _args);
-    }
-    // 执行函数
-    return fn.apply(this,_args);
-  };
-}
-
-const fn = curry(function (a, b, c) {
-  console.log([a, b, c]);
-});
-
-fn("a", "b", "c");
-fn("a", "b")("c");
-fn("a")("b")("c");
-```
+共同点
+1. 性能优化： 虚拟dom
+2. 数据驱动视图
+3. 组件化的思想
+4. 生态系统：Vue.js ，React.js 的生态系统较为完善，有大量的第三方库和插件；
